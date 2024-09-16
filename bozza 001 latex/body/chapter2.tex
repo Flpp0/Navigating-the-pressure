@@ -21,27 +21,113 @@ The patients were searched based on the International Classification of Diseases
 
 \textcolor{red}{FIL CONTROLLIAMOLI ASSIEME}
 
-The inclusion criteria were as follows: (1) age ≥ 18 years, (2) TBI as cause of admission, (3) at least an intracranial pressure (ICP) reading, (4) at least a plasma sodium value.
+\textcolor{blue}{4 e 5 di inclusion e 4 e 5 di esclusion sono la stessa cosa. Per il discorso exclusion abbiamo rimosso pazienti sia in quanto non avevano una numerosità sufficiente per interpolazione sia se non avevano una intersezione tra le due curve (sodio e IPC) di almeno 48h. Per admission criteria si potrebbe mettere direttamente il numero di valori Na e ICP senza mettere che ne abbiano almeno uno e poi mettere anche almeno x valori.
+Discorso intersezione e valori minimi è per la parte di doseNa dosePIC e deltadelta.}
+
+The inclusion criteria were as follows: (1) age $\geq$ 18 years, (2) TBI as cause of admission, (3) at least an intracranial pressure (ICP) reading, (4) at least a plasma sodium value.
 The exclusion criteria were as follows: (1) expected ICU admission patients, (2) ICU admission after elective surgery, (3) ICU stay of less than 72h (20 patients), (4) <1 ICP measurement available , (5) <1 sodium measurement. Patients who died within 72 hours of ICU admission were excluded to focus the analysis on those with potentially salvageable brain injuries.
 
 \subsection{Data Collection}
 \textcolor{red}{FIL CONTROLLIAMOLI ASSIEME}
 
-Baseline parameters within the first day after ICU admission were collected using Python as  Structure Query Language (SQL) parser, including demographics (e.g., sex, age, weight, admission type), comorbidities (e.g., myocardial infarction, congestive heart failure, chronic pulmonary disease, and renal disease), assessment scale scores (Glasgow Coma Scale, GCS and Acute Physiologic Assessment and Chronic Health Evaluation, APACHE II Scoring System), vital signs (e.g., heart rate, respiratory rate, blood pressure, intracranial pressure and pupil reactivity). 
+\textcolor{blue}{Non so nemmeno se valga la pena scrivere di Python e SQL ahah sincero :)}
+Baseline parameters within the first day after ICU admission were collected using Python as  Structure Query Language (SQL) parser, including demographics (e.g., sex, age, weight, admission type), comorbidities (e.g., myocardial infarction, congestive heart failure, chronic pulmonary disease, and renal disease), assessment scale scores (Glasgow Coma Scale, GCS and Acute Physiologic Assessment and Chronic Health Evaluation, APACHE II Scoring System), \textcolor{blue}{DAVVERIO ABBIAMO MESSO ANCHE QUESTI (vital signs)??} vital signs (e.g., heart rate, respiratory rate, blood pressure, intracranial pressure and pupil reactivity). 
 We gathered all serum sodium measurements from ICU admission up to 14 days, or until death, whichever occurred first. Additionally, we recorded data on various therapies, including extraventricular drainage, use of osmotherapy, barbiturate coma, hypothermia, among others. Lastly, we collected outcome data such as 14-day ICU mortality and overall ICU mortality.
 
+All the features extracted can be seen in Tables \ref{tab:categorical_features} and \ref{tab:continuous_features}.
+\begin{table}[h!]
+	\centering
+	\tiny % Reduce font size
+	\begin{tabular}{lll}
+		\hline
+		\textbf{Feature} & \textbf{Category} & \textbf{Count (\%)} \\ \hline
+		SESSO & M & 321 (78.10\%) \\
+		SESSO & F & 90 (21.90\%) \\
+		TIPO & Chirurgico d’urgenza & 229 (55.72\%) \\
+		TIPO & Medico & 182 (44.28\%) \\
+		OUTCOME & non deceduto & 357 (86.86\%) \\
+		OUTCOME & deceduto & 54 (13.14\%) \\
+		ICPm & True & 372 (90.51\%) \\
+		ICPm & False & 39 (9.49\%) \\
+		Hypernatremia\_within\_7\_days & True & 259 (63.02\%) \\
+		Hypernatremia\_within\_7\_days & False & 152 (36.98\%) \\
+		Hyponatremia\_within\_7\_days & False & 257 (62.53\%) \\
+		Hyponatremia\_within\_7\_days & True & 154 (37.47\%) \\
+		\hline
+	\end{tabular}
+	\caption{Categorical Feature Statistics}
+	\label{tab:categorical_features}
+\end{table}
+
+\begin{table}[h!]
+	\centering
+	\tiny % Reduce font size
+	\begin{tabular}{lccc}
+		\hline
+		\textbf{Feature} & \textbf{Mean (unit)} & \textbf{Standard Deviation (unit)} & \textbf{Range (unit)} \\ \hline
+		Altezza & 173.24 (cm) & 12.61 (cm) & [160.63 - 185.86] (cm) \\
+		Peso & 81.53 (kg) & 14.76 (kg) & [66.77 - 96.28] (kg) \\
+		BMI & 25.46 (kg/m$^2$) & 4.15 (kg/m$^2$) & [21.31 - 29.61] (kg/m$^2$) \\
+		Best\_GCS\_Total\_Response & 3.15 & 4.03 & [-0.88 - 7.18] \\
+		Worst\_GCS\_Total\_Response & 2.41 & 3.14 & [-0.74 - 5.55] \\
+		Best\_GCS\_Motor\_Response & 2.56 & 2.09 & [0.47 - 4.65] \\
+		Worst\_GCS\_Motor\_Response & 1.43 & 1.44 & [-0.01 - 2.88] \\
+		Fixed\_Pupil\_Flag & 0.06 & 1.00 & [-0.94 - 1.06] \\
+		AGE\_CLEANED & 54.83 (years) & 18.08 (years) & [36.75 - 72.90] (years) \\
+		APACHE\_II\_Score & 27.46 & 4.83 & [22.64 - 32.29] \\
+		First\_Sodium\_Value & 139.59 (mmol/L) & 4.48 (mmol/L) & [135.11 - 144.07] (mmol/L) \\
+		Time\_to\_Hypernatremia & 9307.56 (minutes) & 8572.06 (minutes) & [735.50 - 17879.62] (minutes) \\
+		Time\_to\_Hyponatremia & 13849.85 (minutes) & 8421.55 (minutes) & [5428.30 - 22271.41] (minutes) \\
+		Na\_min\_first\_7\_days & 135.12 (mmol/L) & 8.76 (mmol/L) & [126.36 - 143.88] (mmol/L) \\
+		Na\_max\_first\_7\_days & 148.33 (mmol/L) & 6.76 (mmol/L) & [141.57 - 155.09] (mmol/L) \\
+		Na\_SD\_first\_7\_days & 3.53 (mmol/L) & 2.44 (mmol/L) & [1.08 - 5.97] (mmol/L) \\
+		\hline
+	\end{tabular}
+	\caption{Continuous Feature Statistics}
+	\label{tab:continuous_features}
+\end{table}
+
+
+
 \subsection{Generation of Variables and Definitions}
-Natriemia on admission was defined as the first available sodium concentration after admission to ICU. Hyponatriemia and hypernatriemia were defined as at least three consecutive serum sodium values below 135 mmol/L or above 145 mmol/L, respectively. The \textit{Na Dose} has then been defined as the area under the curve for which plasma sodium stays below and over the defined thresholds for hyponatriemia and hypernatriemia. 
 
-GCS on on admission was defined as the first available GCS value after admission to ICU, specififying the motor component (GCSm)\cite{kouloulasPrognosticValueTimerelated2013} and further evaluating the best GCS and worst GCS in the first 24h.
+\paragraph{Serum Sodium Concentration on Admission}
 
-\textit{ICP Dose} has been defined as the area under the curve for which ICP stays over a defined threshold of 22mmHg. 
+Serum sodium concentration on admission was defined as the first available sodium measurement after admission to the Intensive Care Unit (ICU). Hyponatremia and hypernatremia were defined as conditions where at least three consecutive serum sodium values were below 135~mmol/L or above 145~mmol/L, respectively. The \textit{Na Dose} was defined as the area under the curve (AUC) where plasma sodium remains below (for hyponatremia) or above (for hypernatremia) the respective thresholds over time. This metric quantifies the extent and duration of sodium abnormalities, providing a cumulative measure of sodium imbalance.
 
-\textcolor{red}{FIL QUA SEI FONDAMENTALE}
+\paragraph{Glasgow Coma Scale (GCS)}
 
-To analyze the relative fluctuations of plasma sodium and ICP, linear regression was applied to the data to generate corresponding sodium (Na) and ICP curves.
-Using a literature-based timeframe\cite{verbalisBrainVolumeRegulation2010a}\cite{seayDiagnosisManagementDisorders2020a} to estimate the delay between changes in plasma sodium and corresponding changes in ICP, we applied a grid search method based on Granger causality\footnote{Granger causality is a statistical method that tests whether past values of one variable can predict future values of another. If one variable improves the prediction of another, it is said to “Granger-cause” the other.} to identify the best-fitting time difference. This optimal value (\textit{tau}) was then used to shift the ICP curve forward relative to the sodium curve. 
-DeltaNa and DeltaICP were defined, corrispectively, as the time differences between consecutive values for both Na and ICP, based on the time-lag between the Na curve and the ICP curve (represented by the previously defined tau). A further grid search was performed using multiple and submultiple values of the delta-time to identify the best-fitting one.
+The Glasgow Coma Scale (GCS) on admission was defined as the first available GCS score after admission to the ICU, with a specific focus on the motor component (GCSm). Additionally, we evaluated the best and worst GCS scores within the first 24~hours to assess the patient's neurological status over time. These measurements are critical for prognostication and monitoring of patients with neurological injuries.
+
+\paragraph{Intracranial Pressure (ICP) Dose and Plasma Sodium (Na) Dose}
+The \textit{ICP Dose} is defined as the area under the curve (AUC) where intracranial pressure (ICP) exceeds 22 mmHg, a threshold linked to worse outcomes in traumatic brain injury. It quantifies the combined magnitude and duration of elevated ICP, offering a measure of intracranial hypertension severity.
+
+The \textit{Na Dose} is the AUC where plasma sodium (Na) levels are outside the normal range: below 135 mmol/L (hyponatremia) or above 145 mmol/L (hypernatremia). It captures the extent and duration of sodium imbalance, providing insight into the severity of electrolyte disturbances and their potential impact on patient outcomes.
+
+
+\paragraph{Analysis of Plasma Sodium and ICP Fluctuations}
+
+\textcolor{blue}{Mi serve un modo per introdurre il discore del delta delta altrimenti si fa fatica a presentare la procedura che abbiamo implementato}.
+The aim of this analysis is to validate that the ratio of changes in intracranial pressure (ICP) to changes in plasma sodium (Na), denoted as \(\frac{\Delta \text{ICP}}{\Delta \text{Na}}\), contains critical information that can predict patient outcomes. By demonstrating the relevance of this metric, we highlight its potential importance for clinical decision-making in the ICU, where timely and accurate adjustments to treatment plans can significantly impact patient recovery.
+
+\textcolor{blue}{Da qui si comincia}
+\textcolor{blue}{DEVO INTRODURRE IL CONCETTO DEL DELTA che è diverso dal concetto di tau. Dobbiamo parlare un attimo di questo. }
+To achieve this, we first generated continuous curves for both Na and ICP using linear interpolation. For Na, linear interpolation was applied between the first and last available sodium concentration values, generating interpolated values at one-minute intervals across the entire timeframe. The same interpolation process was applied to the ICP data, resulting in a continuous curve of ICP values at one-minute intervals. This step ensures a consistent temporal resolution for both variables, enabling a detailed analysis of their fluctuations.
+
+Next, we focused on the overlapping time periods where both Na and ICP curves had data points available. To accurately capture the temporal relationship between changes in Na and subsequent changes in ICP, it is essential to align these time-series data correctly. The concept of $\tau$ is crucial in this context: it represents the time delay between a change in Na (cause) and its resulting effect on ICP (effect). For instance, if we consider time points $T_0$ and $T_1$ for Na, and the same time points for ICP, it would be incorrect to directly correlate these changes without accounting for the time it takes for a change in Na to affect ICP. Therefore, we need to align the curves by shifting the ICP curve backward by $\tau$ minutes relative to the Na curve.
+
+\textcolor{blue}{Da aggiungere che questa procedura ha senso perché clinicamente è accettato che Na influenza PIC e in più abbiamo validato questa con il metodo della Granger Causality: nel 60\% dei casi risultato statisticamente valido. Bisogna scriverlo meglio secondo me.}
+
+To determine the optimal $\tau$, we initially employed Granger causality analysis, a statistical method that assesses whether past values of one time series can predict future values of another. This step served to confirm the well-established directional relationship where changes in Na levels influence subsequent changes in ICP (Na $\rightarrow$ ICP) as documented in the literature. However, while Granger causality validated the direction of influence, it \textit{did not provide a statistically significant universal value for} $\tau$ across the patient population. This finding indicated that a fixed $\tau$ could not adequately describe the relationship for all patients.
+
+Given this limitation, we adopted an empirical approach using a grid search to identify the optimal $\tau$ for each patient. The grid search involved testing various $\tau$ values within a plausible range based on clinical knowledge and previous studies \textcolor{blue}{Ti va se mettiamo proprio i valori?} For each $\tau$ value tested, the Na and ICP curves were aligned accordingly, and we evaluated which alignment produced a dataset that resulted in the best performance of downstream machine learning (ML) models. This data-driven method allowed us to select the most appropriate $\tau$ for each patient, taking into account individual variability in the time delay between changes in Na and their effects on ICP.
+
+By selecting the $\tau$ that maximized the predictive accuracy of the ML models, we ensured that the time-series alignment was optimized for subsequent analysis. This iterative optimization provided a tailored approach for each patient, enhancing the reliability of the calculated \(\frac{\Delta \text{ICP}}{\Delta \text{Na}}\) values and their use in predicting patient outcomes.
+
+In summary, the procedure involved generating interpolated time-series data for Na and ICP, confirming the Na $\rightarrow$ ICP relationship with Granger causality, and using a grid search approach to empirically determine the optimal $\tau$ for aligning these curves. By validating that \(\frac{\Delta \text{ICP}}{\Delta \text{Na}}\) contains relevant and essential information for predicting outcomes, we emphasize its potential value for informing ICU treatment decisions.
+
+
+
 
 \subsection{Statistical analysis and machine learning models development}
 \textcolor{red}{FIL LASCEREI SCRIVERE A TE}
