@@ -11,7 +11,7 @@ Dysnatriemias have already been recognized as a marker of severity of disease an
 
 Serum sodium levels are tightly regulated in the human body, but patients with TBI are at higher risk of developing dysnatremias due to various factors such as hyperosmolar therapy, diabetes insipidus and SIADH. Both hypernatremia\cite{maggioreRelationIncidenceHypernatremia2009a}\cite{vedantamMorbidityMortalityAssociated2017a} and hyponatremia \cite{yumotoPrevalenceRiskFactors2015a} have been linked to higher mortality rates and worse outcomes in traumatic brain injury (TBI) patients as well as in aneurysmal subarachnoid hemorrhage (aSAH)\cite{labibSodiumItsImpact2024}\cite{balesEffectHyponatremiaSodium2016}, highlighting the importance of sodium regulation as a key therapeutic goal for individuals with elevated intracranial pressure. While managing serum sodium levels is important, fluctuations in sodium concentration, rather than just the absolute levels, may also  contribute to injury.\\
 
-We therefore investigate the relationship between fluctuations in plasma sodium (deltaNa) and intracranial pressure (deltaICP) to evaluate how sodium variability influences ICP dynamics. Fluctuations are represented as time patients spent with sodium and ICP levels above or below predefined thresholds — referred to as Na Dose and ICP Dose — as well as  fluctuations within physiologic range.
+We therefore investigate the relationship between fluctuations in plasma sodium (deltaNa) and intracranial pressure (deltaICP) to evaluate how sodium variability influences ICP dynamics. Fluctuations are represented as time patients spent with sodium and ICP levels above or below predefined thresholds — referred to as Na Dose and ICP Dose — as well as  fluctuations within physiologic range.\\
 
 \section {Materials and methods}
 \subsection{Study population}
@@ -28,7 +28,45 @@ The exclusion criteria were as follows: (1) expected ICU admission patients, (2)
 \textcolor{red}{FIL CONTROLLIAMOLI ASSIEME}
 
 Baseline parameters within the first day after ICU admission were collected using Python as  Structure Query Language (SQL) parser, including demographics (e.g., sex, age, weight, admission type), comorbidities (e.g., myocardial infarction, congestive heart failure, chronic pulmonary disease, and renal disease), assessment scale scores (Glasgow Coma Scale, GCS and Acute Physiologic Assessment and Chronic Health Evaluation, APACHE II Scoring System), vital signs (e.g., heart rate, respiratory rate, blood pressure, intracranial pressure and pupil reactivity). 
-We collected all serum sodium concentrations from ICU admission until 14 days, or death, whichever came first. 
-We collected data about therapy including extraventricular drainage informations as well as the use of osmotherapy, barbiturate coma, hypothermia and others. Finally, we collected outcome data including ICU 14-days mortality and ICU mortality.
+We gathered all serum sodium measurements from ICU admission up to 14 days, or until death, whichever occurred first. Additionally, we recorded data on various therapies, including extraventricular drainage, use of osmotherapy, barbiturate coma, hypothermia, among others. Lastly, we collected outcome data such as 14-day ICU mortality and overall ICU mortality.
 
 \subsection{Generation of Variables and Definitions}
+Natriemia on admission was defined as the first available sodium concentration after admission to ICU. Hyponatriemia and hypernatriemia were defined as at least three consecutive serum sodium values below 135 mmol/L or above 145 mmol/L, respectively. The \textit{Na Dose} has then been defined as the area under the curve for which plasma sodium stays below and over the defined thresholds for hyponatriemia and hypernatriemia. 
+
+GCS on on admission was defined as the first available GCS value after admission to ICU, specififying the motor component (GCSm)\cite{kouloulasPrognosticValueTimerelated2013} and further evaluating the best GCS and worst GCS in the first 24h.
+
+\textit{ICP Dose} has been defined as the area under the curve for which ICP stays over a defined threshold of 22mmHg. 
+
+\textcolor{red}{FIL QUA SEI FONDAMENTALE}
+
+To analyze the relative fluctuations of plasma sodium and ICP, linear regression was applied to the data to generate corresponding sodium (Na) and ICP curves.
+Using a literature-based timeframe\cite{verbalisBrainVolumeRegulation2010a}\cite{seayDiagnosisManagementDisorders2020a} to estimate the delay between changes in plasma sodium and corresponding changes in ICP, we applied a grid search method based on Granger causality\footnote{Granger causality is a statistical method that tests whether past values of one variable can predict future values of another. If one variable improves the prediction of another, it is said to “Granger-cause” the other.} to identify the best-fitting time difference. This optimal value (\textit{tau}) was then used to shift the ICP curve forward relative to the sodium curve. 
+DeltaNa and DeltaICP were defined, corrispectively, as the time differences between consecutive values for both Na and ICP, based on the time-lag between the Na curve and the ICP curve (represented by the previously defined tau). A further grid search was performed using multiple and submultiple values of the delta-time to identify the best-fitting one.
+
+\subsection{Statistical analysis and machine learning models development}
+\textcolor{red}{FIL LASCEREI SCRIVERE A TE}
+
+\section {Results}
+\subsection{Patient Demographics and Clinical Features}
+\textcolor{red}{INSERIRE TABELLA DESCRITTIVE}
+
+\subsection{Relationship between serum sodium fluctuations and intracranial pressure}
+\textcolor{red}{VALUTARE INSIEME SE E COME HA SENSO INSERIRE QUESTO PARAGRAFO, IN RIFERIMENTO A QUEL 60\% CIRCA}
+
+\subsection{Relationship Between Na Dose and ICP Dose on outcome}
+\textcolor{red}{SAREBBE IL MODELLO 2}
+
+\subsection{Relationship between sodium fluctuations and ICP fluctuations (DeltaDelta) on outcome}
+\textcolor{red}{SAREBBE IL MODELLO 3}
+
+\subsection{Subgroup analysis: TIL}
+\textcolor{red}{SAREBBE IL DISCORSO SUI TIL CON LE VARIE TABELLE}
+
+\section{Discussion}
+
+\section{Conclusion}
+
+
+
+
+
