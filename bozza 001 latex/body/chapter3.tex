@@ -1,36 +1,199 @@
-\chapter[Chapter name for Index]{Lorem Ipsum}
+\chapter[Na\textsuperscript{\scriptsize+}vigating the pressure, sodium fluctuations]{Na\textsuperscript{\scriptsize+}vigating the pressure, sodium fluctuations}
 
-A tabular example
-\begin{center}
+\textit{The team behind this study started as a research team for a three-day datathon event in Lecco, Italy in November 2023 - the GiViTHON - endorsed by the Clinical Data Science of Istituto di Ricerche Farmacologiche Mario Negri IRCCS and Politecnico di Milano. Ten multidisciplinary teams composed of clinicians, nurses, statisticians, and biodata analysts have been challenged to respond to clinical questions and use the subset database for population selection and   key variables extractions.} 
 
-\begin{tabular}{cc}
-\hline
-\hline
-Tit1	&	Tit2	\\
-\hline
-el1	&	el2	\\
-el1	&	el2	\\
-el1	&	el2	\\
-\hline
-\end{tabular}
+\section {Introduction}
+Traumatic brain injury (TBI) is a critical public health issue that frequently leads to long-term disabilities or death. After a TBI, the brain’s ability to regulate itself can be significantly compromised, resulting in a cascade of physiological disruptions. One of the most important of these is impaired autoregulation, which leads to instability in intracranial pressure (ICP) and compromised cerebral perfusion pressure (CPP). Consequently, cerebral blood flow can be reduced, increasing the risk of \textit{secondary brain injury} through ischemia, hypoxia, and further swelling.
 
-\end{center}
+The primary aim of treatment is to prevent secondary brain injury. This concept relies on distinguishing between injured brain tissue and salvageable brain tissue. While one portion of the brain may be irreversibly damaged, other areas remain viable but at risk due to inadequate blood flow or rising ICP. Failure to manage these can worsen the damage in these vulnerable regions, ultimately exacerbating the overall brain injury.\\
 
-but tabulars cannot be captioned ! (are in text elements)
+Dysnatriemias have already been recognized as a marker of severity of disease and related to mortality in the critically ill patient. There is however accumulating evidence that even mild abnormalities of serum sodium could be linked to disease severity and mortality, including changes within the normal range\cite{sakrFluctuationsSerumSodium2013}.
 
+Serum sodium levels are tightly regulated in the human body, but patients with TBI are at higher risk of developing dysnatremias due to various factors such as hyperosmolar therapy, diabetes insipidus and SIADH. Both hypernatremia\cite{maggioreRelationIncidenceHypernatremia2009a}\cite{vedantamMorbidityMortalityAssociated2017a} and hyponatremia \cite{yumotoPrevalenceRiskFactors2015a} have been linked to higher mortality rates and worse outcomes in traumatic brain injury (TBI) patients as well as in aneurysmal subarachnoid hemorrhage (aSAH)\cite{labibSodiumItsImpact2024}\cite{balesEffectHyponatremiaSodium2016}, highlighting the importance of sodium regulation as a key therapeutic goal for individuals with elevated intracranial pressure. While managing serum sodium levels is important, fluctuations in sodium concentration, rather than just the absolute levels, may also  contribute to injury.\\
 
-\begin{table}
-  \centering
-    \begin{tabular}{| l c r |}
-    \hline
-    1 & 2 & 3 \\
-    4 & 5 & 6 \\
-    7 & 8 & 9 \\
-    \hline
-    \end{tabular}
-  \caption{A simple table}
+We therefore investigate the relationship between fluctuations in plasma sodium (deltaNa) and intracranial pressure (deltaICP) to evaluate how sodium variability influences ICP dynamics. Fluctuations are represented as time patients spent with sodium and ICP levels above or below predefined thresholds — referred to as Na Dose and ICP Dose — as well as  fluctuations within physiologic range.\\
+
+\section {Materials and methods}
+\subsection{Study population}
+The cohort of critically ill patients with TBI was enrolled from a subpart of the Margherita3 electronic health record database - developed by the Italian Group for the Evaluation of Interventions in Intensive Care Medicine\cite{finazziDataCollectionResearch2018} - which contains the comprehensive clinical data of 5730\textcolor{red}{CONTROLLARE NUMERO PAZIENTI} patients of about 70 italian intensive care units (ICUs) between \textcolor{red}{AGGIUNGERE LE DATE}. 
+
+The patients were searched based on the International Classification of Diseases (ICD-10) code. The inclusion criteria identified 411 \textcolor{red}{CONTROLLARE NUMERO PAZIENTI} patients who were diagnosed with TBI.
+
+For most of the study variables, the software immediately ran an automatic check for internal consistency, generating queries then sent to physicians for resolution before incorporation of the new data into the database.\\
+
+\textcolor{red}{FIL CONTROLLIAMOLI ASSIEME}
+
+\textcolor{blue}{4 e 5 di inclusion e 4 e 5 di esclusion sono la stessa cosa. Per il discorso exclusion abbiamo rimosso pazienti sia in quanto non avevano una numerosità sufficiente per interpolazione sia se non avevano una intersezione tra le due curve (sodio e IPC) di almeno 48h. Per admission criteria si potrebbe mettere direttamente il numero di valori Na e ICP senza mettere che ne abbiano almeno uno e poi mettere anche almeno x valori.
+Discorso intersezione e valori minimi è per la parte di doseNa dosePIC e deltadelta.}
+
+The inclusion criteria were as follows: (1) age $\geq$ 18 years, (2) TBI as cause of admission, (3) at least an intracranial pressure (ICP) reading, (4) at least a plasma sodium value.
+The exclusion criteria were as follows: (1) expected ICU admission patients, (2) ICU admission after elective surgery, (3) ICU stay of less than 72h (20 patients), (4) <1 ICP measurement available , (5) <1 sodium measurement. Patients who died within 72 hours of ICU admission were excluded to focus the analysis on those with potentially salvageable brain injuries.
+
+\subsection{Data Collection}
+\textcolor{red}{FIL CONTROLLIAMOLI ASSIEME}
+
+\textcolor{blue}{Non so nemmeno se valga la pena scrivere di Python e SQL ahah sincero :)}
+Baseline parameters within the first day after ICU admission were collected using Python as  Structure Query Language (SQL) parser, including demographics (e.g., sex, age, weight, admission type), comorbidities (e.g., myocardial infarction, congestive heart failure, chronic pulmonary disease, and renal disease), assessment scale scores (Glasgow Coma Scale, GCS and Acute Physiologic Assessment and Chronic Health Evaluation, APACHE II Scoring System), \textcolor{blue}{DAVVERIO ABBIAMO MESSO ANCHE QUESTI (vital signs)??} vital signs (e.g., heart rate, respiratory rate, blood pressure, intracranial pressure and pupil reactivity). 
+We gathered all serum sodium measurements from ICU admission up to 14 days, or until death, whichever occurred first. Additionally, we recorded data on various therapies, including extraventricular drainage, use of osmotherapy, barbiturate coma, hypothermia, among others. Lastly, we collected outcome data such as 14-day ICU mortality and overall ICU mortality.
+
+All the features extracted can be seen in Tables \ref{tab:categorical_features} and \ref{tab:continuous_features}.
+\begin{table}[h!]
+	\centering
+	\tiny % Reduce font size
+	\begin{tabular}{lll}
+		\hline
+		\textbf{Feature} & \textbf{Category} & \textbf{Count (\%)} \\ \hline
+		SESSO & M & 321 (78.10\%) \\
+		SESSO & F & 90 (21.90\%) \\
+		TIPO & Chirurgico d’urgenza & 229 (55.72\%) \\
+		TIPO & Medico & 182 (44.28\%) \\
+		OUTCOME & non deceduto & 357 (86.86\%) \\
+		OUTCOME & deceduto & 54 (13.14\%) \\
+		ICPm & True & 372 (90.51\%) \\
+		ICPm & False & 39 (9.49\%) \\
+		Hypernatremia\_within\_7\_days & True & 259 (63.02\%) \\
+		Hypernatremia\_within\_7\_days & False & 152 (36.98\%) \\
+		Hyponatremia\_within\_7\_days & False & 257 (62.53\%) \\
+		Hyponatremia\_within\_7\_days & True & 154 (37.47\%) \\
+		\hline
+	\end{tabular}
+	\caption{Categorical Feature Statistics}
+	\label{tab:categorical_features}
 \end{table}
 
-Using the table environment, the caption works ! BUT BECOMES FLOATING OBJECTS (in fact is on the bottom of the page due to no more text inserted afterwards).
+\begin{table}[h!]
+	\centering
+	\tiny % Reduce font size
+	\begin{tabular}{lccc}
+		\hline
+		\textbf{Feature} & \textbf{Mean (unit)} & \textbf{Standard Deviation (unit)} & \textbf{Range (unit)} \\ \hline
+		Altezza & 173.24 (cm) & 12.61 (cm) & [160.63 - 185.86] (cm) \\
+		Peso & 81.53 (kg) & 14.76 (kg) & [66.77 - 96.28] (kg) \\
+		BMI & 25.46 (kg/m$^2$) & 4.15 (kg/m$^2$) & [21.31 - 29.61] (kg/m$^2$) \\
+		Best\_GCS\_Total\_Response & 3.15 & 4.03 & [-0.88 - 7.18] \\
+		Worst\_GCS\_Total\_Response & 2.41 & 3.14 & [-0.74 - 5.55] \\
+		Best\_GCS\_Motor\_Response & 2.56 & 2.09 & [0.47 - 4.65] \\
+		Worst\_GCS\_Motor\_Response & 1.43 & 1.44 & [-0.01 - 2.88] \\
+		Fixed\_Pupil\_Flag & 0.06 & 1.00 & [-0.94 - 1.06] \\
+		AGE\_CLEANED & 54.83 (years) & 18.08 (years) & [36.75 - 72.90] (years) \\
+		APACHE\_II\_Score & 27.46 & 4.83 & [22.64 - 32.29] \\
+		First\_Sodium\_Value & 139.59 (mmol/L) & 4.48 (mmol/L) & [135.11 - 144.07] (mmol/L) \\
+		Time\_to\_Hypernatremia & 9307.56 (minutes) & 8572.06 (minutes) & [735.50 - 17879.62] (minutes) \\
+		Time\_to\_Hyponatremia & 13849.85 (minutes) & 8421.55 (minutes) & [5428.30 - 22271.41] (minutes) \\
+		Na\_min\_first\_7\_days & 135.12 (mmol/L) & 8.76 (mmol/L) & [126.36 - 143.88] (mmol/L) \\
+		Na\_max\_first\_7\_days & 148.33 (mmol/L) & 6.76 (mmol/L) & [141.57 - 155.09] (mmol/L) \\
+		Na\_SD\_first\_7\_days & 3.53 (mmol/L) & 2.44 (mmol/L) & [1.08 - 5.97] (mmol/L) \\
+		\hline
+	\end{tabular}
+	\caption{Continuous Feature Statistics}
+	\label{tab:continuous_features}
+\end{table}
 
-Same thing for the figure environment
+
+
+\subsection{Generation of Variables and Definitions}
+
+\paragraph{Serum Sodium Concentration on Admission}
+
+Serum sodium concentration on admission was defined as the first available sodium measurement after admission to the Intensive Care Unit (ICU). Hyponatremia and hypernatremia were defined as conditions where at least three consecutive serum sodium values were below 135~mmol/L or above 145~mmol/L, respectively. The \textit{Na Dose} was defined as the area under the curve (AUC) where plasma sodium remains below (for hyponatremia) or above (for hypernatremia) the respective thresholds over time. This metric quantifies the extent and duration of sodium abnormalities, providing a cumulative measure of sodium imbalance.
+
+\paragraph{Glasgow Coma Scale (GCS)}
+
+The Glasgow Coma Scale (GCS) on admission was defined as the first available GCS score after admission to the ICU, with a specific focus on the motor component (GCSm). Additionally, we evaluated the best and worst GCS scores within the first 24~hours to assess the patient's neurological status over time. These measurements are critical for prognostication and monitoring of patients with neurological injuries.
+
+\paragraph{Intracranial Pressure (ICP) Dose and Plasma Sodium (Na) Dose}
+The \textit{ICP Dose} is defined as the area under the curve (AUC) where intracranial pressure (ICP) exceeds 22 mmHg, a threshold linked to worse outcomes in traumatic brain injury. It quantifies the combined magnitude and duration of elevated ICP, offering a measure of intracranial hypertension severity.
+
+The \textit{Na Dose} is the AUC where plasma sodium (Na) levels are outside the normal range: below 135 mmol/L (hyponatremia) or above 145 mmol/L (hypernatremia). It captures the extent and duration of sodium imbalance, providing insight into the severity of electrolyte disturbances and their potential impact on patient outcomes.
+
+
+\paragraph{Analysis of Plasma Sodium and ICP Fluctuations}
+\textcolor{red}{POTREBBE ESSERE QUESTA LA FRASE CHE CHIEDI SOTTO? Since significant sodium fluctuations can occur within the clinically accepted normal range, a single sodium measurement may fail to detect  important variations.}
+To analyze the relative fluctuations of plasma sodium and ICP, linear regression was applied to the data to generate corresponding sodium (Na) and ICP curves.
+\textcolor{blue}{Mi serve un modo per introdurre il discore del delta delta altrimenti si fa fatica a presentare la procedura che abbiamo implementato}.
+The aim of this analysis is to validate that the ratio of changes in intracranial pressure (ICP) to changes in plasma sodium (Na), denoted as \(\frac{\Delta \text{ICP}}{\Delta \text{Na}}\), contains critical information that can predict patient outcomes. By demonstrating the relevance of this metric, we highlight its potential importance for clinical decision-making in the ICU, where timely and accurate adjustments to treatment plans can significantly impact patient recovery.
+
+\textcolor{blue}{Da qui si comincia} \textcolor{red}{LEGGI COMMENTI}
+%A ME QUESTO NON DISPIACE, FORSE TROPPO SEMPLICE MA, SE CORRETTO, IO LO CAPISCO: Using a literature- based timeframe[37][30] to estimate the delay between changes in plasma sodium and corresponding changes in ICP, we applied a grid search method based on Granger causality1 to identify the best-fitting time difference. This optimal value (tau) was then used to shift the ICP curve forward relative to the sodium curve. DeltaNa and DeltaICP were defined, corrispectively, as the time differences between consecutive values for both Na and ICP, based on the time-lag between the Na curve and the ICP curve (represented by the previously defined tau). A further grid search was performed using multiple and submultiple values of the delta-time to identify the best-fitting one.
+\textcolor{blue}{DEVO INTRODURRE IL CONCETTO DEL DELTA che è diverso dal concetto di tau. Dobbiamo parlare un attimo di questo. }
+To achieve this, we first generated continuous curves for both Na and ICP using linear interpolation. For Na, linear interpolation was applied between the first and last available sodium concentration values, generating interpolated values at one-minute intervals across the entire timeframe. The same interpolation process was applied to the ICP data, resulting in a continuous curve of ICP values at one-minute intervals. This step ensures a consistent temporal resolution for both variables, enabling a detailed analysis of their fluctuations.
+
+Next, we focused on the overlapping time periods where both Na and ICP curves had data points available. To accurately capture the temporal relationship between changes in Na and subsequent changes in ICP, it is essential to align these time-series data correctly. The concept of $\tau$ is crucial in this context: it represents the time delay between a change in Na (cause) and its resulting effect on ICP (effect). For instance, if we consider time points $T_0$ and $T_1$ for Na, and the same time points for ICP, it would be incorrect to directly correlate these changes without accounting for the time it takes for a change in Na to affect ICP. Therefore, we need to align the curves by shifting the ICP curve backward by $\tau$ minutes relative to the Na curve.
+
+\textcolor{blue}{Da aggiungere che questa procedura ha senso perché clinicamente è accettato che Na influenza PIC e in più abbiamo validato questa con il metodo della Granger Causality: nel 60\% dei casi risultato statisticamente valido. Bisogna scriverlo meglio secondo me.}
+
+To determine the optimal $\tau$, we initially employed Granger causality analysis, a statistical method that assesses whether past values of one time series can predict future values of another. This step served to confirm the well-established directional relationship where changes in Na levels influence subsequent changes in ICP (Na $\rightarrow$ ICP) as documented in the literature. However, while Granger causality validated the direction of influence, it \textit{did not provide a statistically significant universal value for} $\tau$ across the patient population. This finding indicated that a fixed $\tau$ could not adequately describe the relationship for all patients.
+
+Given this limitation, we adopted an empirical approach using a grid search to identify the optimal $\tau$ for each patient. The grid search involved testing various $\tau$ values within a plausible range based on clinical knowledge and previous studies \textcolor{blue}{Ti va se mettiamo proprio i valori?} For each $\tau$ value tested, the Na and ICP curves were aligned accordingly, and we evaluated which alignment produced a dataset that resulted in the best performance of downstream machine learning (ML) models. This data-driven method allowed us to select the most appropriate $\tau$ for each patient, taking into account individual variability in the time delay between changes in Na and their effects on ICP.
+
+By selecting the $\tau$ that maximized the predictive accuracy of the ML models, we ensured that the time-series alignment was optimized for subsequent analysis. This iterative optimization provided a tailored approach for each patient, enhancing the reliability of the calculated \(\frac{\Delta \text{ICP}}{\Delta \text{Na}}\) values and their use in predicting patient outcomes.
+
+In summary, the procedure involved generating interpolated time-series data for Na and ICP, confirming the Na $\rightarrow$ ICP relationship with Granger causality, and using a grid search approach to empirically determine the optimal $\tau$ for aligning these curves. By validating that \(\frac{\Delta \text{ICP}}{\Delta \text{Na}}\) contains relevant and essential information for predicting outcomes, we emphasize its potential value for informing ICU treatment decisions.
+
+
+
+
+\subsection{Statistical analysis and machine learning models development}
+\textcolor{red}{FIL LASCEREI SCRIVERE A TE}
+
+\section {Results}
+\subsection{Patient Demographics and Clinical Features}
+\textcolor{red}{INSERIRE TABELLA DESCRITTIVE}
+
+\subsection{Relationship between serum sodium fluctuations and intracranial pressure}
+\textcolor{red}{VALUTARE INSIEME SE E COME HA SENSO INSERIRE QUESTO PARAGRAFO, IN RIFERIMENTO A QUEL 60\% CIRCA}
+
+\subsection{Relationship Between Na Dose and ICP Dose on outcome}
+\textcolor{red}{SAREBBE IL MODELLO 2}
+
+\subsection{Relationship between sodium fluctuations and ICP fluctuations (DeltaDelta) on outcome}
+\textcolor{red}{SAREBBE IL MODELLO 3}
+
+\subsection{Subgroup analysis: TIL}
+\textcolor{red}{SAREBBE IL DISCORSO SUI TIL CON LE VARIE TABELLE}
+
+
+\section{Discussion}
+%key findings temp title
+We found that  serum sodium fluctuations and relative ICP fluctuations, are a significant predictor of mortality, in line with findings from Harrois et. al.\cite{harroisVariabilitySerumSodium2021a}
+
+In our study, even after adjusting for baseline severity, fluctuations in serum sodium and ICP, even within normal ranges, were still linked to 14-day mortality.
+
+The DeltaICP/DeltaNa ratio suggests that larger fluctuations in serum sodium are associated with the need for higher therapy intensity levels, raising the possibility that acute sodium variations may partially explain the relationship between DeltaICP/DeltaNa and patient outcomes.\\
+
+%discussione vera e propria
+Severe dysnatremia has long been associated with higher mortality rates. Sodium disorders are often caused by excessive administration or restriction of free water, but they are also linked to various comorbidities. Additionally, treatments such as surgery\cite{marshallAssociationSodiumFluctuations2017}\cite{sakrFluctuationsSerumSodium2013}, trauma or other acute illnesses\cite{senSodiumVariabilityAssociated2017a} can trigger or exacerbate these imbalances.
+
+However, emerging evidence\cite{darmonPrognosticConsequencesBorderline2013} indicates that even mild deviations from normal sodium levels or simple fluctuations in sodium values may also carry significant clinical implications, especially in the brain injured patient. While this is well documented in subarachnoid hemorrhage \cite{jinAssociationSerumSodium2022}\cite{labibSodiumItsImpact2024}\cite{balesEffectHyponatremiaSodium2016}\cite{topjianGreaterFluctuationsSerum2014}\cite{eaglesSignificanceFluctuationsSerum2019}\cite{haradaImpactHormonalDynamics2022}, the effect on TBI has only recently been explored\cite{harroisVariabilitySerumSodium2021a}.
+
+%non sono sicuro di questa frase
+Our findings are significant for several reasons. First, understanding the risk factors associated with mortality helps clinicians make informed decisions about how often to monitor sodium levels, the type of fluids administered (hypotonic vs. isotonic), and how much sodium levels are allowed to fluctuate. Second, identifying sodium fluctuations as an independent risk factor for hospital mortality highlights the need to further explore their physiological causes and impacts, which could help clinicians identify at-risk patients earlier and potentially reduce mortality rates.
+
+In our DeltaICP/DeltaNa analysis, we found that larger fluctuations in DeltaICP/DeltaNa were associated with higher mortality, this could be driven by DeltaNa alone. Rapid changes in sodium levels over a short time may pose a greater risk to patients due to the fast cerebral fluid shifts that occur. In response to hypertonic conditions in the extracellular space, brain cells attempt to restore osmotic balance by absorbing organic osmoles, a process that requires time. Sudden shifts in extracellular sodium can lead to intracellular fluid and electrolyte imbalances, resulting in cellular edema, particularly in an already injured brain with compromised or slower adaptive mechanisms. Additionally, it remains challenging to determine how our interventions might affect the unsalvageable brain—could our therapies inadvertently harm the very salvageable brain tissue we aim to protect in the first place?
+
+%TIL
+It’s plausible that patients who died or had poor neurological outcomes at 14 days were exposed to a broader range of sodium concentrations due to the need for therapies like hypertonic saline. Although the delta/delta ratio is a relative measurement, the overall variation appears low. This counterintuitive result could be attributed to minimal fluctuation occurring at consistently high levels of Na (as part of the therapeutic strategy) and ICP (due to exhausted cerebral compliance).
+%inserire qui grafico sovrapposto di curva compliance e TIL.
+
+\subsection{Limitations and current prospectives}
+This is a retrospective study, and as such, it carries the inherent limitations associated with this type of research.
+
+We did not assess neurological outcomes nor the Glasgow Outcome Coma Scale was available in our database. This limitation should be addressed in future studies investigating sodium fluctuations in TBI patients.
+
+We didn't assessed the impact of intravenous fluid administration on sodium variability, as it was challenging to extract detailed information regarding the specific types of hypertonic saline\cite{holdenHypertonicSalineUse2023a} used for osmolar therapy.
+For similar reasons, we didn't assessed the impact of diabete insipidus through desmopressin administration, as considering it alone as a surrogate marker woulnd't have been enough to diagnose DI or to discriminate with other brain-related plasma sodium disorders (SIADH or CSW). 
+
+Although we adjusted for TIL, serum sodium fluctuations may still be a reflection of overall illness severity. Nevertheless, dysnatremias remain a known risk factor and should be incorporated into future predictive models for mortality in TBI patients, including fluctuations within normal limits, rather than dismissed as a mere consequence of disease severity.
+
+Additional limitations in the subanalysis of patients within TIL therapy categories, beyond the already mentioned hypertonic saline, include missing data on decompressive craniectomy\cite{kimRecentUpdatesControversies2023a} and other interventions that are difficult to associate with specific treatment goals. For instance, it’s unclear whether vasopressors were used to manage elevated ICP or for other hemodynamic purposes, further complicating the analysis.
+
+Lastly, patients who died within the first three days were excluded, which may limit the generalizability of our results.
+
+
+\section{Conclusion}
+While doses of potassium, glucose, and water are routinely adjusted, sodium is typically administered at standard concentrations as long as serum levels remain within an acceptable or desired range. This is common practice in many ICU patients and is well tolerated in most cases. However, for some individuals, the sodium content may not align with their intravascular volume or neuroendocrine status, leading to impaired sodium homeostasis. Until it is definitively proven that dysnatremia is merely a non-causal marker of an underlying harmful systemic process, it is prudent to assume that even slight sodium fluctuations and the resulting osmotic shifts could be detrimental. Therefore, the focus should perhaps shift to sodium fluctuations, or even osmolality. Minimizing sodium fluctuations to maintain a stable sodium trajectory and osmolality might be of more importance than sodium levels themselves.
+
+
+
+
+
