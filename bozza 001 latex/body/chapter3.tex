@@ -33,67 +33,6 @@ The features extracted can be seen in Tables \ref{tab:categorical_features} and 
 
 The features extracted can be seen in Tables \ref{tab:categorical_features} and \ref{tab:continuous_features}.
 
-\begin{table}[h!]
-    \centering
-    \small % Reduce font size
-    \begin{tabular}{lll}
-    \hline
-    \textbf{Feature} & \textbf{Category} & \textbf{Count\_n (\%)} \\
-    \hline
-    SEX & M & 321 (78.10\%) \\
-    %SEX & F & 90 (21.90\%) \\
-    TYPE & Chirurgico d’urgenza & 229 (55.72\%) \\
-    TYPE & Medico & 182 (44.28\%) \\
-    OUTCOME & alive at 14 days & 357 (86.86\%) \\
-   %dividere tra alive GCS>8, alive GCS<=8 e death 
-   % GCS & > 8 & xx (xx\%) \\ 
-   % GCS & =< 8 & 54 (13.14\%) \\
-    PUPIL & anisocorìa & 217 (52.80\%) \\
-    %PUPIL & False & 194 (47.20\%) \\
-    %ICPm & True & 372 (90.51\%) \\
-    %ICPm & False & 39 (9.49\%) \\
-    %ICPm non ho proprio capito cosa sia...
-    Hypernatremia & True & 259 (63.02\%) \\ 
-    %Hypernatremia & False & 152 (36.98\%) \\
-    Hyponatremia & True & 154 (37.47\%) \\
-    %Hyponatremia & False & 257 (62.53\%) \\
-    \hline
-    \end{tabular}
-    \caption{Categorical Feature Statistics}
-    \label{tab:categorical_features}
-\end{table}
-
-\begin{table}[h!]
-	\centering
-	\tiny % Reduce font size
-	\begin{tabular}{lcc}
-		\hline
-		\textbf{Feature} & \textbf{Mean (unit)} & \textbf{Range (unit)}\textcolor{blue}{[mean-std, mean+std]} \\ \hline
-		Altezza & 173.24 (cm) & [160.63 - 185.86] (cm) \\
-		Peso & 81.53 (kg) & [66.77 - 96.28] (kg) \\
-		BMI & 25.46 (kg/m$^2$) & [21.31 - 29.61] (kg/m$^2$) \\
-		Best GCS during first 24h hours & 6.29 & [3 - 9.84] \\
-		%Worst GCS \textcolor{red}{at admission} & 2.41 & 3.14 & [-0.74 - 5.55] \\
-		Best GCS Motor response during first 24h hours & 3.05 & [1.13 - 4.97] \\
-		%Worst\_GCS\_Motor\_Response & 1.43 & 1.44 & [-0.01 - 2.88] \\
-		
-		AGE  & 54.83 (years) & [36.75 - 72.90] (years) \\
-		APACHE II Score & 27.46& [22.64 - 32.29] \\
-		First Sodium Value & 139.59 (mmol/L)  & [135.11 - 144.07] (mmol/L) \\
-		Time to Hypernatremia & 48.97 (h)  & [5.95 - 91.99] (h) \\
-		Time to Hyponatremia & 55.32 (h)  & [0 - 111.96] (h) \\
-		%Na min first 7 days & 135.12 (mmol/L) & 8.76 (mmol/L) & [126.36 - 143.88] (mmol/L) \\
-		%Na max first 7 days & 148.33 (mmol/L) & 6.76 (mmol/L) & [141.57 - 155.09] (mmol/L) \\
-		%li ricalcolerei come n di pazienti <135 e >145 includendoli in time to hypenatriemia e tyime to hyponatriemia OPPURE LI LASCIAMO aggiungendo comunque i dati di sopra... - vanno SU 14 GIORNI
-		Na min first 14 days  & 135.11 (mmol/L)  & [126.35 - 143.87] (mmol/L) \\
-		Na max first 14 days  & 148.33 (mmol/L)  & [141.57 - 155.87] (mmol/L) \\
-		Na SD first 14 days & 3.53 (mmol/L)  & [1.08 - 5.97] (mmol/L) \\
-		%la Na SD altri studi la chiamano Na variability, forse lascerei cosi che genera confusione, va messu anche lui su 14 giorni
-		\hline
-	\end{tabular}
-	\caption{Continuous Feature Statistics. \footnotesize{APACHE: Acute Physiology and Chronic Health Evaluation, BMI: Body Mass Index, GCS: Glasgow Coma Scale, Na max: maximum serum sodium over 14 days, Na min: minimum serum sodium over 14 days, Na SD: standard deviation of plasma sodium over 14 days}}
-	\label{tab:continuous_features}
-\end{table}
 
 \subsection{Generation of Variables and Definitions}
 
@@ -130,7 +69,7 @@ By selecting the $\tau$ that maximized the predictive accuracy of the ML models,
 %In summary, the procedure involved generating interpolated time-series data for Na and ICP, confirming the Na $\rightarrow$ ICP relationship with Granger causality, and using a grid search approach to empirically determine the optimal $\tau$ for aligning these curves. By validating that \(\frac{\Delta \text{ICP}}{\Delta \text{Na}}\) contains relevant and essential information for predicting outcomes, we emphasize its potential value for informing ICU treatment decisions.
 
 Once the curves were aligned using the optimal time delay ($tau$), it was necessary to select a time interval, referred to as "delta time," for calculating the differences between consecutive samples in both the sodium (Na) and intracranial pressure (ICP) curves. The delta time represents the time interval between each sample point and its preceding one, which determines the granularity of the observed changes (DeltaNa and DeltaICP). 
-A further grid search was performed using multiple and submultiple values of the delta-time to identify the best-fitting one, starting from multiple or submultiple of the tau value.
+A further grid search was performed for the delta-time to identify the best-fitting one, starting from multiple or submultiple of the tau value.
 
 
 \subsection{Statistical analysis and machine learning models development}
@@ -138,16 +77,82 @@ A further grid search was performed using multiple and submultiple values of the
 
 \section {Results}
 \subsection{Patient Demographics and Clinical Features}
-\textcolor{red}{INSERIRE TABELLA DESCRITTIVE, PERCHE LE METTIAMO SOPRA?}
+\begin{table}[h!]
+	\centering
+	\small % Reduce font size
+	\begin{tabular}{lll}
+		\hline
+		\textbf{Feature} & \textbf{Category} & \textbf{Count\_n (\%)} \\
+		\hline
+		SEX & M & 321 (78.10\%) \\
+		%SEX & F & 90 (21.90\%) \\
+		TYPE & Chirurgico d’urgenza & 229 (55.72\%) \\
+		TYPE & Medico & 182 (44.28\%) \\
+		OUTCOME & alive at 14 days & 357 (86.86\%) \\
+		%dividere tra alive GCS>8, alive GCS<=8 e death 
+		% GCS & > 8 & xx (xx\%) \\ 
+		% GCS & =< 8 & 54 (13.14\%) \\
+		PUPIL & anisocorìa & 217 (52.80\%) \\
+		%PUPIL & False & 194 (47.20\%) \\
+		%ICPm & True & 372 (90.51\%) \\
+		%ICPm & False & 39 (9.49\%) \\
+		%ICPm non ho proprio capito cosa sia...
+		Hypernatremia & True & 259 (63.02\%) \\ 
+		%Hypernatremia & False & 152 (36.98\%) \\
+		Hyponatremia & True & 154 (37.47\%) \\
+		%Hyponatremia & False & 257 (62.53\%) \\
+		\hline
+	\end{tabular}
+	\caption{Categorical Feature Statistics}
+	\label{tab:categorical_features}
+\end{table}
 
-\subsection{Relationship between serum sodium fluctuations and intracranial pressure}
-\textcolor{red}{VALUTARE INSIEME SE E COME HA SENSO INSERIRE QUESTO PARAGRAFO, IN RIFERIMENTO A QUEL 60\% CIRCA}
+\begin{table}[h!]
+	\centering
+	\tiny % Reduce font size
+	\begin{tabular}{lcc}
+		\hline
+		\textbf{Feature} & \textbf{Mean (unit)} & \textbf{Range (unit)}\textcolor{blue}{[mean-std, mean+std]} \\ \hline
+		Altezza & 173.24 (cm) & [160.63 - 185.86] (cm) \\
+		Peso & 81.53 (kg) & [66.77 - 96.28] (kg) \\
+		BMI & 25.46 (kg/m$^2$) & [21.31 - 29.61] (kg/m$^2$) \\
+		Best GCS during first 24h hours & 6.29 & [3 - 9.84] \\
+		%Worst GCS \textcolor{red}{at admission} & 2.41 & 3.14 & [-0.74 - 5.55] \\
+		Best GCS Motor response during first 24h hours & 3.05 & [1.13 - 4.97] \\
+		%Worst\_GCS\_Motor\_Response & 1.43 & 1.44 & [-0.01 - 2.88] \\
+		
+		AGE  & 54.83 (years) & [36.75 - 72.90] (years) \\
+		APACHE II Score & 27.46& [22.64 - 32.29] \\
+		First Sodium Value & 139.59 (mmol/L)  & [135.11 - 144.07] (mmol/L) \\
+		Time to Hypernatremia & 48.97 (h)  & [5.95 - 91.99] (h) \\
+		Time to Hyponatremia & 55.32 (h)  & [0 - 111.96] (h) \\
+		%Na min first 7 days & 135.12 (mmol/L) & 8.76 (mmol/L) & [126.36 - 143.88] (mmol/L) \\
+		%Na max first 7 days & 148.33 (mmol/L) & 6.76 (mmol/L) & [141.57 - 155.09] (mmol/L) \\
+		%li ricalcolerei come n di pazienti <135 e >145 includendoli in time to hypenatriemia e tyime to hyponatriemia OPPURE LI LASCIAMO aggiungendo comunque i dati di sopra... - vanno SU 14 GIORNI
+		Na min first 14 days  & 135.11 (mmol/L)  & [126.35 - 143.87] (mmol/L) \\
+		Na max first 14 days  & 148.33 (mmol/L)  & [141.57 - 155.87] (mmol/L) \\
+		Na SD first 14 days & 3.53 (mmol/L)  & [1.08 - 5.97] (mmol/L) \\
+		%la Na SD altri studi la chiamano Na variability, forse lascerei cosi che genera confusione, va messu anche lui su 14 giorni
+		\hline
+	\end{tabular}
+	\caption{Continuous Feature Statistics. \footnotesize{APACHE: Acute Physiology and Chronic Health Evaluation, BMI: Body Mass Index, GCS: Glasgow Coma Scale, Na max: maximum serum sodium over 14 days, Na min: minimum serum sodium over 14 days, Na SD: standard deviation of plasma sodium over 14 days}}
+	\label{tab:continuous_features}
+\end{table}
+
+
+%\subsection{Relationship between serum sodium fluctuations and intracranial pressure}
+%\textcolor{red}{VALUTARE INSIEME SE E COME HA SENSO INSERIRE QUESTO PARAGRAFO, IN RIFERIMENTO A QUEL 60\% CIRCA}
+\subsection{Relationship Between Patient Descriptives on outcome}
+\textcolor{red}{SAREBBE IL MODELLO 1. SECONDO ME SI PERCHÈ CI DA LA BASELINE PER FAR VEDERE IMPROVEMENTS.}
 
 \subsection{Relationship Between Na Dose and ICP Dose on outcome}
 \textcolor{red}{SAREBBE IL MODELLO 2}
 
 \subsection{Relationship between sodium fluctuations and ICP fluctuations (DeltaDelta) on outcome}
 \textcolor{red}{SAREBBE IL MODELLO 3}
+
+\subsection{Subgroup analysis: OUTCOME A TRE LIVELLI}
+%%
 
 \subsection{Subgroup analysis: TIL}
 \textcolor{red}{SAREBBE IL DISCORSO SUI TIL CON LE VARIE TABELLE}
