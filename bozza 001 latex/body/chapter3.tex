@@ -21,19 +21,13 @@ The patients were searched based on the International Classification of Diseases
 
 For most of the study variables, the software immediately ran an automatic check for internal consistency, generating queries then sent to physicians for resolution before incorporation of the new data into the database.\\
 
-%FIXED
-\textcolor{red}{4 e 5 di inclusion e 4 e 5 di esclusion sono la stessa cosa: OK, Per il discorso exclusion abbiamo rimosso pazienti sia in quanto non avevano una numerosità sufficiente per interpolazione sia se non avevano una intersezione tra le due curve (sodio e IPC) di almeno 48h -> NON LO METTEREI o COMUNQUE NON QUI,  Per admission criteria si potrebbe mettere direttamente il numero di valori Na e ICP senza mettere che ne abbiano almeno uno e poi mettere anche almeno x valori. -> LASCEREI COSI CHE è CHIARO. Discorso intersezione e valori minimi è per la parte di doseNa dosePIC e deltadelta -> OK METTIAMO SOLO SOTTO}
-
 The inclusion criteria were as follows: (1) age $\geq$ 18 years, (2) TBI as cause of admission, (3) at least one intracranial pressure (ICP) reading, (4) at least one plasma sodium value.
 The exclusion criteria were as follows: (1) expected ICU admission patients, (2) ICU admission after elective surgery, (3) ICU stay of less than 72h (20 patients). Patients who died within 72 hours of ICU admission were excluded to focus the analysis on those with potentially salvageable brain injuries.
 
 \subsection{Data Collection}
-\textcolor{red}{Non so nemmeno se valga la pena scrivere di Python e SQL ahah sincero :) -> AHAHAH SE VUOI TOGLIAMO, MINORE DEI PROBLEMI COMUNQUE}
+Baseline parameters within the first day after ICU admission were collected including demographics (e.g., sex, age, weight, admission type), comorbidities (e.g., myocardial infarction, congestive heart failure, chronic pulmonary disease, and renal disease), assessment scale scores (Glasgow Coma Scale, GCS and Acute Physiologic Assessment and Chronic Health Evaluation, APACHE II Scoring System), intracranial pressure and pupil reactivity.
 
-Baseline parameters within the first day after ICU admission were collected using Python as  Structure Query Language (SQL) parser, including demographics (e.g., sex, age, weight, admission type), comorbidities (e.g., myocardial infarction, congestive heart failure, chronic pulmonary disease, and renal disease), assessment scale scores (Glasgow Coma Scale, GCS and Acute Physiologic Assessment and Chronic Health Evaluation, APACHE II Scoring System), intracranial pressure and pupil reactivity. \textcolor{red}{DAVVERIO ABBIAMO MESSO ANCHE QUESTI (vital signs)?? -> NO, O MEGLIO MI SERVIVI TU PER FARE RECAP, SICURAMENTE ICP E PUPIL REACTIVITY, RINOMINATI} 
 We gathered all serum sodium measurements from ICU admission up to 14 days, or until death, whichever occurred first. Additionally, we recorded data on various therapies, including extraventricular drainage, use of osmotherapy, barbiturate coma, hypothermia, among others. Lastly, we collected outcome data such as 14-day ICU mortality and overall ICU mortality.
-
-\textcolor{red}{PERCHE MI SEMBRANO SCHIACCIATe LE TABELLE? ho cambiato TINY->SMALL, ps LEGGERE COMMENTI}
 
 The features extracted can be seen in Tables \ref{tab:categorical_features} and \ref{tab:continuous_features}.
 
@@ -47,21 +41,22 @@ The features extracted can be seen in Tables \ref{tab:categorical_features} and 
     \textbf{Feature} & \textbf{Category} & \textbf{Count\_n (\%)} \\
     \hline
     SEX & M & 321 (78.10\%) \\
-    SEX & F & 90 (21.90\%) \\
+    %SEX & F & 90 (21.90\%) \\
     TYPE & Chirurgico d’urgenza & 229 (55.72\%) \\
     TYPE & Medico & 182 (44.28\%) \\
     OUTCOME & alive at 14 days & 357 (86.86\%) \\
    %dividere tra alive GCS>8, alive GCS<=8 e death 
    % GCS & > 8 & xx (xx\%) \\ 
    % GCS & =< 8 & 54 (13.14\%) \\
-    \textcolor{red}{PUPIL} & non reactive & xx (xx\%) \\ % Placeholder data; replace with actual values
+    PUPIL & anisocorìa & 217 (52.80\%) \\
+    %PUPIL & False & 194 (47.20\%) \\
     %ICPm & True & 372 (90.51\%) \\
     %ICPm & False & 39 (9.49\%) \\
     %ICPm non ho proprio capito cosa sia...
     Hypernatremia & True & 259 (63.02\%) \\ 
-    Hypernatremia & False & 152 (36.98\%) \\
+    %Hypernatremia & False & 152 (36.98\%) \\
     Hyponatremia & True & 154 (37.47\%) \\
-    Hyponatremia & False & 257 (62.53\%) \\
+    %Hyponatremia & False & 257 (62.53\%) \\
     \hline
     \end{tabular}
     \caption{Categorical Feature Statistics}
@@ -71,26 +66,28 @@ The features extracted can be seen in Tables \ref{tab:categorical_features} and 
 \begin{table}[h!]
 	\centering
 	\tiny % Reduce font size
-	\begin{tabular}{lccc}
+	\begin{tabular}{lcc}
 		\hline
-		\textbf{Feature} & \textbf{Mean (unit)} & \textbf{Standard Deviation (unit)} & \textbf{Range (unit)} \\ \hline
-		Altezza & 173.24 (cm) & 12.61 (cm) & [160.63 - 185.86] (cm) \\
-		Peso & 81.53 (kg) & 14.76 (kg) & [66.77 - 96.28] (kg) \\
-		BMI & 25.46 (kg/m$^2$) & 4.15 (kg/m$^2$) & [21.31 - 29.61] (kg/m$^2$) \\
-		Best GCS \textcolor{red}{during first 24h hours} & 3.15 & 4.03 & [-0.88 - 7.18] \\
+		\textbf{Feature} & \textbf{Mean (unit)} & \textbf{Range (unit)}\textcolor{blue}{[mean-std, mean+std]} \\ \hline
+		Altezza & 173.24 (cm) & [160.63 - 185.86] (cm) \\
+		Peso & 81.53 (kg) & [66.77 - 96.28] (kg) \\
+		BMI & 25.46 (kg/m$^2$) & [21.31 - 29.61] (kg/m$^2$) \\
+		Best GCS during first 24h hours & 6.29 & [3 - 9.84] \\
 		%Worst GCS \textcolor{red}{at admission} & 2.41 & 3.14 & [-0.74 - 5.55] \\
-		Best GCS Motor response \textcolor{red}{during first 24h hours} & 2.56 & 2.09 & [0.47 - 4.65] \\
+		Best GCS Motor response during first 24h hours & 3.05 & [1.13 - 4.97] \\
 		%Worst\_GCS\_Motor\_Response & 1.43 & 1.44 & [-0.01 - 2.88] \\
 		
-		AGE  & 54.83 (years) & 18.08 (years) & [36.75 - 72.90] (years) \\
-		APACHE II Score & 27.46 & 4.83 & [22.64 - 32.29] \\
-		First Sodium Value & 139.59 (mmol/L) & 4.48 (mmol/L) & [135.11 - 144.07] (mmol/L) \\
-		Time to Hypernatremia \textcolor{red}{CONTROLLARE, sono sec?} & 9307.56 (minutes) & 8572.06 (minutes) & [735.50 - 17879.62] (minutes) \\
-		Time to Hyponatremia \textcolor{red}{CONTROLLARE} & 13849.85 (minutes) & 8421.55 (minutes) & [5428.30 - 22271.41] (minutes) \\
+		AGE  & 54.83 (years) & [36.75 - 72.90] (years) \\
+		APACHE II Score & 27.46& [22.64 - 32.29] \\
+		First Sodium Value & 139.59 (mmol/L)  & [135.11 - 144.07] (mmol/L) \\
+		Time to Hypernatremia & 48.97 (h)  & [5.95 - 91.99] (h) \\
+		Time to Hyponatremia & 55.32 (h)  & [0 - 111.96] (h) \\
 		%Na min first 7 days & 135.12 (mmol/L) & 8.76 (mmol/L) & [126.36 - 143.88] (mmol/L) \\
 		%Na max first 7 days & 148.33 (mmol/L) & 6.76 (mmol/L) & [141.57 - 155.09] (mmol/L) \\
 		%li ricalcolerei come n di pazienti <135 e >145 includendoli in time to hypenatriemia e tyime to hyponatriemia OPPURE LI LASCIAMO aggiungendo comunque i dati di sopra... - vanno SU 14 GIORNI
-		Na SD first 14 days \textcolor{red}{14} & 3.53 (mmol/L) & 2.44 (mmol/L) & [1.08 - 5.97] (mmol/L) \\
+		Na min first 14 days  & 135.11 (mmol/L)  & [126.35 - 143.87] (mmol/L) \\
+		Na max first 14 days  & 148.33 (mmol/L)  & [141.57 - 155.87] (mmol/L) \\
+		Na SD first 14 days & 3.53 (mmol/L)  & [1.08 - 5.97] (mmol/L) \\
 		%la Na SD altri studi la chiamano Na variability, forse lascerei cosi che genera confusione, va messu anche lui su 14 giorni
 		\hline
 	\end{tabular}
@@ -102,15 +99,14 @@ The features extracted can be seen in Tables \ref{tab:categorical_features} and 
 
 \paragraph{Serum Sodium Concentration on Admission}
 
-Serum sodium concentration on admission was defined as the first available sodium measurement after admission to the Intensive Care Unit (ICU). Hyponatremia and hypernatremia were defined as conditions where \textcolor{red}{at least three consecutive serum sodium values, PERCHE TRE? QUESTO NON ERA PCO2?} were below 135~mmol/L or above 145~mmol/L, respectively. 
-\textcolor{red}{The \textit{Na Dose} was defined as the area under the curve (AUC) where plasma sodium remains below (for hyponatremia) or above (for hypernatremia) the respective threshold over time. GIA SCRITTO SOTTO}
+Serum sodium concentration on admission was defined as the first available sodium measurement after admission to the Intensive Care Unit (ICU). Hyponatremia and hypernatremia were defined as conditions where at least one serum sodium values was below 135~mmol/L or above 145~mmol/L, respectively. 
 
 \paragraph{Glasgow Coma Scale (GCS)}
 
-The Glasgow Coma Scale (GCS) on admission was defined as the first available GCS score after admission to the ICU, with a specific focus on the motor component (GCSm)\cite{kouloulasPrognosticValueTimerelated2013}. \textcolor{red}{Additionally, we evaluated the best GCS scores within the first 24~hours to assess the patient's neurological status over time.TOLTO "THE WORST"} These measurements are critical for prognostication and monitoring of patients with neurological injuries.
+The Glasgow Coma Scale (GCS) on admission was defined as the first available GCS score after admission to the ICU, with a specific focus on the motor component (GCSm)\cite{kouloulasPrognosticValueTimerelated2013}. Additionally, we evaluated the best GCS scores within the first 24~hours to assess the patient's neurological status over time. These measurements are critical for prognostication and monitoring of patients with neurological injuries.
 
 \paragraph{Intracranial Pressure (ICP) Dose and Plasma Sodium (Na) Dose}
-Pressure Time Dose is a method used to quantify cumulative secondary injury by calculating the total area under or over a defined physiological threshold. This approach integrates the cumulative exposure to abnormal pressures over time to assess the impact of deviations on patient outcomes. With this, we defined the following.
+Pressure Time Dose is a method used to quantify cumulative secondary injury by calculating the total area under or over a defined physiological threshold. This approach integrates the cumulative exposure to abnormal pressures over time to assess the impact of deviations on patient outcomes. That said, we defined the following.
 
 The \textit{ICP Dose} as the area under the curve (AUC) where intracranial pressure (ICP) exceeds 22 mmHg, accepted critical threshold according to literature\cite{hawrylukManagementAlgorithmPatients2019a}. It quantifies the combined magnitude and duration of elevated ICP, offering a measure of intracranial hypertension severity.
 
