@@ -91,18 +91,16 @@ All the features extracted can be seen in Tables \ref{tab:categorical_features} 
 
 \subsection{Generation of Variables and Definitions}
 
-\paragraph{Serum Sodium Concentration on Admission}
+\paragraph{Serum Sodium Concentration on Admission and Na Dose}
 
 Serum sodium concentration on admission was defined as the first available sodium measurement after admission to the Intensive Care Unit (ICU). Hyponatremia and hypernatremia were defined as conditions where at least three consecutive serum sodium values were below 135~mmol/L or above 145~mmol/L, respectively. The \textit{Na Dose} was defined as the area under the curve (AUC) where plasma sodium remains below (for hyponatremia) or above (for hypernatremia) the respective thresholds over time. This metric quantifies the extent and duration of sodium abnormalities, providing a cumulative measure of sodium imbalance.
 
 \paragraph{Glasgow Coma Scale (GCS)}
 
-The Glasgow Coma Scale (GCS) on admission was defined as the first available GCS score after admission to the ICU, with a specific focus on the motor component (GCSm). Additionally, we evaluated the best and worst GCS scores within the first 24~hours to assess the patient's neurological status over time. These measurements are critical for prognostication and monitoring of patients with neurological injuries.
+The Glasgow Coma Scale (GCS) on admission was defined as the first available GCS score after admission to the ICU, with a specific focus on the motor component (GCSm). Additionally, we evaluated the best and worst GCS scores within the first 24~hours to assess the patient's neurological status over time. 
 
-\paragraph{Intracranial Pressure (ICP) Dose and Plasma Sodium (Na) Dose}
+\paragraph{Intracranial Pressure (ICP) Dose}
 The \textit{ICP Dose} is defined as the area under the curve (AUC) where intracranial pressure (ICP) exceeds 22 mmHg, a threshold linked to worse outcomes in traumatic brain injury. It quantifies the combined magnitude and duration of elevated ICP, offering a measure of intracranial hypertension severity.
-
-The \textit{Na Dose} is the AUC where plasma sodium (Na) levels are outside the normal range: below 135 mmol/L (hyponatremia) or above 145 mmol/L (hypernatremia). It captures the extent and duration of sodium imbalance, providing insight into the severity of electrolyte disturbances and their potential impact on patient outcomes.
 
 
 \paragraph{Analysis of Plasma Sodium and ICP Fluctuations}
@@ -125,8 +123,37 @@ Given this limitation, we adopted an empirical approach using a grid search to i
 By selecting the $\tau$ that maximized the predictive accuracy of the ML models, we ensured that the time-series alignment was optimized for subsequent analysis. This iterative optimization provided a tailored approach for each patient, enhancing the reliability of the calculated \(\frac{\Delta \text{ICP}}{\Delta \text{Na}}\) values and their use in predicting patient outcomes.
 
 In summary, the procedure involved generating interpolated time-series data for Na and ICP, confirming the Na $\rightarrow$ ICP relationship with Granger causality, and using a grid search approach to empirically determine the optimal $\tau$ for aligning these curves. By validating that \(\frac{\Delta \text{ICP}}{\Delta \text{Na}}\) contains relevant and essential information for predicting outcomes, we emphasize its potential value for informing ICU treatment decisions.
+\\
+\textcolor{blue}{QUESTA UN' ALTRA IDEA}
+\paragraph{Analysis of Plasma Sodium and ICP Fluctuations NEW}
 
+In this analysis, we explore the predictive power of changes in intracranial pressure (ICP) relative to changes in plasma sodium (Na), denoted as $\frac{\Delta \text{ICP}}{\Delta \text{Na}}$, as well as the dynamic features extracted directly from the Na and ICP signals themselves. The aim is to demonstrate that both the delta-delta relationship and the dynamic features of these signals—specifically those that capture relative changes over time—contain valuable information that can predict patient outcomes in the ICU. This multi-faceted approach allows us to consider not only the interactions between Na and ICP but also their standalone behaviors over time, focusing on how these parameters change relative to their baselines rather than on their absolute values.
 
+To achieve this, the analysis is divided into two main parts:
+
+\paragraph{Feature Extraction from Na and ICP Signals:}
+
+The first part of the analysis focuses on the individual Na and ICP signals to extract their dynamic characteristics over time. For each patient, we generated continuous curves for both Na and ICP using linear interpolation. The interpolated data points were generated at one-minute intervals across the entire observation period, providing a high-resolution temporal analysis of the signals.
+
+From these interpolated signals, we extracted several features that characterize the temporal behavior of Na and ICP independently. These features include dynamic metrics such as the range, variability, skewness, kurtosis, and spectral entropy, which capture the fluctuation and variability of the signals over time. We also calculated the "dose" of Na and ICP, defined as the area under the curve (AUC) where the respective signal values exceed or fall below clinically significant thresholds (e.g., hypernatremia threshold for Na and intracranial hypertension threshold for ICP). These dose features are particularly useful as they represent cumulative deviations from normal levels, emphasizing the duration and extent of abnormal states rather than just their occurrence.
+
+Importantly, we focused on extracting \textit{relative value features} rather than absolute values. For instance, while absolute metrics like mean or standard deviation were initially considered, we found that they often correlated with dynamic features such as "dose." Since our primary goal was to understand the temporal dynamics and the evolving nature of these signals, we prioritized features that describe changes and relative behaviors over time. This focus ensures that the analysis emphasizes how signals deviate from their baselines and interact dynamically, which is more relevant for predicting patient outcomes.
+
+\paragraph{Delta-Delta Analysis of Na and ICP Signals:}
+
+The second part of the analysis focuses on the relationship between changes in Na and changes in ICP using the delta-delta approach. This involves examining the ratio of changes in ICP to changes in Na ($\frac{\Delta \text{ICP}}{\Delta \text{Na}}$) and identifying how this ratio varies over time for each patient. To align these time-series data correctly and capture the temporal lag between a change in Na (cause) and its resulting effect on ICP (effect), we introduced the concept of $\tau$.
+
+Using a combination of Granger causality analysis and a grid search approach, we determined the optimal $\tau$ for each patient to align the Na and ICP signals effectively. Once aligned, we calculated the delta-delta series for overlapping time periods, where both signals had valid data points. From these series, we extracted features such as mean, median, skewness, kurtosis, and entropy, focusing on how these ratios fluctuate and change over time. These delta-delta features further emphasize the importance of relative dynamics between Na and ICP, aligning with our goal of understanding signal behavior through their changes rather than absolute values.
+
+\paragraph{Integrating Both Analyses for Predictive Modeling}
+
+By combining the features extracted from both the Na and ICP signals themselves and their delta-delta interactions, we provide a comprehensive dataset that captures both direct signal behaviors and their dynamic relationships. However, for the purpose of training machine learning models, we focused primarily on \textit{relative value features}. This decision was motivated by our interest in capturing the dynamics and changes in signals rather than static levels.
+
+While absolute features like the mean or standard deviation of the signals were initially extracted, they were excluded from the final model because they were often redundant when compared with more dynamic metrics, such as the "dose" of Na or ICP. Our primary focus was on understanding how signals evolve and interact over time, which is best captured through relative and dynamic features. This approach helps to reduce redundancy in the feature set and ensures that the models are trained on the most informative aspects of the data, emphasizing the patterns and interactions that are more likely to provide actionable insights for clinical decision-making.
+
+\paragraph{Conclusion}
+
+This dual analysis approach underscores the importance of considering both the individual characteristics of Na and ICP signals and their interactions. By focusing on relative value features in our predictive models, we highlight the dynamics of signal interactions, providing a more nuanced understanding of patient states. The delta-delta analysis reveals insights into the relationship between Na and ICP fluctuations, while the direct signal features capture the dynamics of these physiological parameters over time. Together, they offer a holistic view of patient dynamics in the ICU, supporting more informed clinical decision-making.
 
 
 \subsection{Statistical analysis and machine learning models development}
