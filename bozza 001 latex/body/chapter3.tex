@@ -31,9 +31,6 @@ We gathered all serum sodium measurements from ICU admission up to 14 days, or u
 
 The features extracted can be seen in Tables \ref{tab:categorical_features} and \ref{tab:continuous_features}.
 
-The features extracted can be seen in Tables \ref{tab:categorical_features} and \ref{tab:continuous_features}.
-
-
 \subsection{Generation of Variables and Definitions}
 
 \paragraph{Serum Sodium Concentration on Admission and Na Dose}
@@ -42,7 +39,7 @@ Serum sodium concentration on admission was defined as the first available sodiu
 
 \paragraph{Glasgow Coma Scale (GCS)}
 
-The Glasgow Coma Scale (GCS) on admission was defined as the first available GCS score after admission to the ICU, with a specific focus on the motor component (GCSm). Additionally, we evaluated the best and worst GCS scores within the first 24~hours to assess the patient's neurological status over time. 
+The Glasgow Coma Scale (GCS) on admission was defined as the first available GCS score after admission to the ICU, with a specific focus on the motor component (GCSm)\cite{kouloulasPrognosticValueTimerelated2013}. Additionally, we evaluated the best GCS scores within the first 24~hours to assess the patient's neurological status over time. 
 
 \paragraph{Intracranial Pressure (ICP) Dose}
 The \textit{ICP Dose} is defined as the area under the curve (AUC) where intracranial pressure (ICP) exceeds 22 mmHg, a threshold linked to worse outcomes in traumatic brain injury. It quantifies the combined magnitude and duration of elevated ICP, offering a measure of intracranial hypertension severity.
@@ -52,7 +49,7 @@ The \textit{ICP Dose} is defined as the area under the curve (AUC) where intracr
 
 We explored the predictive value of the ratio between changes in intracranial pressure (DeltaICP) and plasma sodium (DeltaNa) - expressed as DeltaICP/DeltaNa - considering the dynamic nature of their relative changes over time. 
 
-To achieve this, we first generated continuous curves for both Na and ICP using linear interpolation. For Na, linear interpolation was applied between the first and last available sodium concentration values, generating interpolated values at one-minute intervals across the entire timeframe. The same interpolation process was applied to the ICP data, resulting in a continuous curve of ICP values at one-minute intervals. This step ensures a consistent temporal resolution for both variables, enabling a detailed analysis of their fluctuations.
+To achieve this, we first generated continuous curves for both Na and ICP using linear interpolation. For Na, linear interpolation was applied between the first and last available sodium concentration values obtained from ABG samples, generating interpolated values at one-minute intervals across the entire timeframe. The same interpolation process was applied to the ICP data, resulting in a continuous curve of ICP values at one-minute intervals. This step ensures a consistent temporal resolution for both variables, enabling a detailed analysis of their fluctuations.
 
 Using a literature-based timeframe[37][30] to estimate the delay between changes in plasma sodium and corresponding changes in ICP, we applied a grid search method based on Granger causality\footnote{Granger causality is a statistical method that tests whether past values of one variable can predict future values of another. If one variable improves the prediction of another, it is said to “Granger- cause” the other.} to identify the best-fitting time difference. This optimal value ($\tau$) was then used to shift the ICP curve relative to the sodium curve. DeltaNa and DeltaICP were defined, corrispectively, as the time differences between consecutive values for both Na and ICP, based on the time-lag between the Na curve and the ICP curve (represented by the previously defined $\tau$).
 %A further grid search was performed using multiple and submultiple values of the delta-time to identify the best-fitting one.
@@ -72,8 +69,22 @@ Once the curves were aligned using the optimal time delay ($tau$), it was necess
 A further grid search was performed for the delta-time to identify the best-fitting one, starting from multiple or submultiple of the tau value.
 
 
-\subsection{Statistical analysis and machine learning models development}
-\textcolor{red}{FIL LASCEREI SCRIVERE A TE}
+\subsection{Machine learning models development}
+In this section the predictive capabilities of different machine learning algorithms (ML models) have being tested on our dataset.
+
+In particularly, the outcome at 14 days (target variable) was considered.
+This outcome is binary, expressed as \textit{alive at 14 days} or \textit{not alive at 14 days}.
+
+For each specific binary classification task, to gain as much as possible predictive capabilities, we tested different pipelines using as evaluation metrics the accuracy and the AUC-ROC.
+Each pipeline is composed by a scaler\footnote{preprocessing tool in machine learning used to standardize or normalize feature values to ensure that each feature contributes equally to the model by bringing all values into a comparable range}, a feature selection method\footnote {technique used to identify and select the most relevant features (variables) from a dataset with the the highest predictive power to improve performance by reducing noise and avoiding overfitting.} and a machine learning model.
+
+The base model (\textit{Model 1}) has been developed and trained starting from patient demographics and clinical features available comprehensive of summary statics of sodium trends. 
+
+Above this base model further features where added, in order:
+
+\textit {Model 2} accounts for the cumulative effect of ICP Dose and Na Dose. As middle step,  both ICP Dose and Na Dose were evaluated individually and then added together.
+
+The third model (\textit{Model 3}) explores the effects of the DeltaICP/DeltaNa informations over the base model. The DeltaICP/DeltaNa features where extracted as outlined in paragraph 3.2.3. 
 
 \section {Results}
 \subsection{Patient Demographics and Clinical Features}
