@@ -68,6 +68,9 @@ By selecting the $\tau$ that maximized the predictive accuracy of the ML models,
 Once the curves were aligned using the optimal time delay ($tau$), it was necessary to select a time interval, referred to as "delta time," for calculating the differences between consecutive samples in both the sodium (Na) and intracranial pressure (ICP) curves. The delta time represents the time interval between each sample point and its preceding one, which determines the granularity of the observed changes (DeltaNa and DeltaICP). 
 A further grid search was performed for the delta-time to identify the best-fitting one, starting from multiple or submultiple of the tau value.
 
+%\subsection{Dataset internal validation}
+%To prove the recognized causal relationship between sodium and ICP, we tested it using the Granger Causality method
+
 
 \subsection{Machine learning models development}
 In this section the predictive capabilities of different machine learning algorithms (ML models) have being tested on our dataset.
@@ -78,7 +81,7 @@ This outcome is binary, expressed as \textit{alive at 14 days} or \textit{not al
 For each specific binary classification task, to gain as much as possible predictive capabilities, we tested different pipelines using as evaluation metrics the accuracy and the AUC-ROC.
 Each pipeline is composed by a scaler\footnote{preprocessing tool in machine learning used to standardize or normalize feature values to ensure that each feature contributes equally to the model by bringing all values into a comparable range}, a feature selection method\footnote {technique used to identify and select the most relevant features (variables) from a dataset with the the highest predictive power to improve performance by reducing noise and avoiding overfitting.} and a machine learning model.
 
-The base model (\textit{Model 1}) has been developed and trained starting from patient demographics and clinical features available comprehensive of summary statics of sodium trends. 
+The base model (\textit{Model 1}) has been developed and trained starting from patient demographics and clinical features available comprehensive of summary statics of sodium trends. For further details related to the features used to train this model refer to \textcolor{red}{CREATE AND REFERENCE THE TABLE}. 
 
 Above this base model further features where added, in order:
 
@@ -88,6 +91,10 @@ The third model (\textit{Model 3}) explores the effects of the DeltaICP/DeltaNa 
 
 \section {Results}
 \subsection{Patient Demographics and Clinical Features}
+In this section we present the descriptive characteristics of our population, divided into  categorical variables and numerical (continuous) variables.
+
+\textcolor{red}{TO DO: SISTEMARE DESCRIZIONE TABELLE}
+
 \begin{table}[h!]
 	\centering
 	\small % Reduce font size
@@ -150,20 +157,69 @@ The third model (\textit{Model 3}) explores the effects of the DeltaICP/DeltaNa 
 	\label{tab:continuous_features}
 \end{table}
 
-
 %\subsection{Relationship between serum sodium fluctuations and intracranial pressure}
 %\textcolor{red}{VALUTARE INSIEME SE E COME HA SENSO INSERIRE QUESTO PARAGRAFO, IN RIFERIMENTO A QUEL 60\% CIRCA}
-\subsection{Relationship Between Patient Descriptives on outcome}
-\textcolor{red}{SAREBBE IL MODELLO 1. SECONDO ME SI PERCHÈ CI DA LA BASELINE PER FAR VEDERE IMPROVEMENTS.}
+\subsection{Relationship of patient descriptives on outcome}
+Our reference \textit{Model 1} achieved an AUC of 0,72 considering the patient baseline characteristics (eg. age, sex, weight, body mass index) and comorbidities (comprehensive of APACHE II score) as well as sodium-related summary statistics (min Na, max Na, Na SD, first sodium value, hypernatremia, hyponatremia, time to hypernatremia, time to hyponatremia) or neurologic status descriptive of the first 24hours (ICP monitoring, pupil status, best GCS and best motor GCS).
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{pictures/fig5_basemodel.png}
+    \caption{Reference model} % Add a meaningful caption
+    \label{fig:model1} % Add a label for referencing
+\end{figure}
 
 \subsection{Relationship Between Na Dose and ICP Dose on outcome}
-\textcolor{red}{SAREBBE IL MODELLO 2}
+Our \textit{Model 2} achieved an AUC of 0,85 with a net 18\% improvement over base model. Additionally, over patient descriptives, this model contains informations regarding Na Dose (both above and below thresholds) and ICP Dose.
 
-\subsection{Relationship between sodium fluctuations and ICP fluctuations (DeltaDelta) on outcome}
-\textcolor{red}{SAREBBE IL MODELLO 3}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{pictures/fig6_model2.png}
+    \caption{Model 2} % Add a meaningful caption
+    \label{fig:model2} % Add a label for referencing
+\end{figure}
 
-\subsection{Subgroup analysis: OUTCOME A TRE LIVELLI}
-%%
+\subsection{Relationship between sodium fluctuations and ICP fluctuations (DeltaICP/DeltaNa) on outcome}
+Our last model, \textit{Model 3} was targeting the relative changes between ICP curves and sodiumc curves over time. It reached an AUC of 0,83 with a 15\% gain  over base model. 
+
+The model 3 is the result of a grid-search testing different tau and delta times, as shown in Figure \ref{fig:model3tau}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{pictures/fig7_model3.png}
+    \caption{Model 3} % Add a meaningful caption
+    \label{fig:model3} % Add a label for referencing
+\end{figure}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\textwidth]{pictures/fig8_model3tau.png}
+	\caption{Testing different combinations with grid search, only AUC>81\% are plotted} % Add a meaningful caption
+    \label{fig:model3tau} % Add a label for referencing
+\end{figure}
+
+
+\subsection{Subgroup analysis: outcome}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{pictures/fig9_ICPdose.png}
+    \caption{ICP Dose and outcome} % Add a meaningful caption
+    \label{fig:ICPdose_outcome} % Add a label for referencing
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{pictures/fig10_ICPfluctuations.png}
+    \caption{ICP fluctuations and outcome} % Add a meaningful caption
+    \label{fig:ICPfluctuations_outcome} % Add a label for referencing
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{pictures/fig11_ICPslope.png}
+    \caption{ICP linear trend over time and outcome} % Add a meaningful caption
+    \label{fig:ICPslope_outcome} % Add a label for referencing
+\end{figure}
+
 
 \subsection{Subgroup analysis: TIL}
 \textcolor{red}{SAREBBE IL DISCORSO SUI TIL CON LE VARIE TABELLE}
