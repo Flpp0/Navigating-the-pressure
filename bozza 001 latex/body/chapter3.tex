@@ -70,8 +70,7 @@ A further grid search was performed for the delta-time to identify the best-fitt
 
 \subsection{Therapy Intensity Level}
 \textcolor{red}{DA FINIRE}
-We  divided the patients into three subgroups based on their maximum TIL (Therapy Intensity Level) reached during the observation window. The TILs were simplified from the stepwise therapy and therapeutic TILs proposed in other studies. A more detailed categorisation wasn’t possible due to the absence of certain key variables in the Margherita3 dataset (such as decompressive craniectomy and hypertonic solution therapy, some of which had already been discussed).
-\textcolor{red}{RICOSTRUIRE TABELLA TIL}
+We  divided the patients into three subgroups based on their maximum TIL (Therapy Intensity Level) reached during the observation window. The TILs were simplified from the stepwise therapy and therapeutic TILs proposed in other studies. A more detailed categorisation wasn’t possible due to the absence of certain key variables in the dataset (such as decompressive craniectomy and hypertonic solution therapy). See Table \ref{tabTIL}
 
 \begin{table}[h!]
     \centering
@@ -115,6 +114,7 @@ We  divided the patients into three subgroups based on their maximum TIL (Therap
     \end{adjustbox}
     \caption{Therapy Intensity Levels (TIL) scale. \footnotesize{Adapted from Robba et. al\cite{robbaTreatmentsIntracranialHypertension2023a}}}
     \small{\flushleft{No information about secondary decompression is available in the database\\$^*$ not possible to differentiate the target of sedation \\$^{**}$ not possible to differentiate the target of vasopressor therapy\\$^{***}$ about osmotic therapy, no information about the dose was available}
+    \label{tabTIL}
 \end{table}
 
 \subsection{Outcome definition}
@@ -281,9 +281,22 @@ The model 3 is the result of a grid-search testing different tau and delta times
     \label{fig:ICPslope_outcome} % Add a label for referencing
 \end{figure}
 
-
 \subsection{Subgroup analysis: TIL}
 \textcolor{red}{SAREBBE IL DISCORSO SUI TIL CON LE VARIE TABELLE}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{pictures/fig12_ICPTIL.png}
+    \caption{ICP trend in different TIL} % Add a meaningful caption
+    \label{fig:ICPTIL} % Add a label for referencing
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{pictures/fig13_DDTIL.png}
+    \caption{DeltaICP/DeltaNa and cerebral compliance} % Add a meaningful caption
+    \label{fig:DDTIL} % Add a label for referencing
+\end{figure}
 
 
 \section{Discussion}
