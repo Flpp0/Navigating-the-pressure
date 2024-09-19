@@ -68,6 +68,62 @@ By selecting the $\tau$ that maximized the predictive accuracy of the ML models,
 Once the curves were aligned using the optimal time delay ($tau$), it was necessary to select a time interval, referred to as "delta time," for calculating the differences between consecutive samples in both the sodium (Na) and intracranial pressure (ICP) curves. The delta time represents the time interval between each sample point and its preceding one, which determines the granularity of the observed changes (DeltaNa and DeltaICP). 
 A further grid search was performed for the delta-time to identify the best-fitting one, starting from multiple or submultiple of the tau value.
 
+\subsection{Therapy Intensity Level}
+\textcolor{red}{DA FINIRE}
+We  divided the patients into three subgroups based on their maximum TIL (Therapy Intensity Level) reached during the observation window. The TILs were simplified from the stepwise therapy and therapeutic TILs proposed in other studies. A more detailed categorisation wasn’t possible due to the absence of certain key variables in the Margherita3 dataset (such as decompressive craniectomy and hypertonic solution therapy, some of which had already been discussed).
+\textcolor{red}{RICOSTRUIRE TABELLA TIL}
+
+\begin{table}[h!]
+    \centering
+    \renewcommand{\arraystretch}{1.5} % Adjust the row height
+    \begin{adjustbox}{width=0.8\textwidth}
+    \begin{tabular}{|>{\raggedright\arraybackslash}p{4cm}|>{\raggedright\arraybackslash}p{4cm}|>{\raggedright\arraybackslash}p{10cm}|}
+        \hline
+        \textbf{Categorized TIL} & \textbf{TIL SCALE} & \textbf{DESCRIPTION} \\
+        \hline
+        \multirow{2}{*}{\textbf{TIL 1}} 
+        & \textbf{No specific therapy} & No specific ICP directed therapy \\
+        \cline{2-3}
+        & \textbf{Basic} 
+        & - Sedation for ventilator/endotracheal tube tolerance* \newline 
+        - Volume/vasopressors for non-cerebral nervous system cause (e.g., sepsis, myocardial injury)** \newline 
+        - Head-up positioning (ventilator bundle) \newline 
+        - Normocapnia (partial pressure of carbon dioxide PaCO$_2$ ≥ 40 mmHg) \\
+        \hline
+        \multirow{2}{*}{\textbf{TIL 2-3}} 
+        & \textbf{Mild} 
+        & - Higher levels of sedation* \newline 
+        - Vasopressors/volume for cerebral perfusion pressure (CPP) support** \newline 
+        - Low dose osmotic therapy*** \newline 
+        - Mild hypocapnia (PaCO$_2$ 35-40 mmHg) \newline 
+        - Cerebrospinal fluid (CSF) drainage < 120 ml/day (<5 ml/hour) \\
+        \cline{2-3}
+        & \textbf{Moderate} 
+        & - Higher doses of osmotic therapy*** \newline 
+        - Moderate hypocapnia (PaCO$_2$ 30-35 mmHg) \newline 
+        - Mild hypothermia ($T>35^\circ\text{C}$)) \newline 
+        - CSF drainage ≥ 120 ml/day (>5 ml/hour) \\
+        \hline
+        \textbf{Extreme TIL (eTIL)} 
+        & \textbf{Extreme} 
+        & - Profound hypocapnia (PaCO$_2$ <30 mmHg) \newline 
+        - Extreme hypothermia ($T<35^\circ\text{C}$) \newline 
+        - Extreme suppression for ICP control \newline 
+        - \st{Secondary decompression (surgery after 24h)} \\
+        \hline
+    \end{tabular}
+    \end{adjustbox}
+    \caption{Therapy Intensity Levels (TIL) scale. \footnotesize{Adapted from Robba et. al\cite{robbaTreatmentsIntracranialHypertension2023a}}}
+    \small{\flushleft{No information about secondary decompression is available in the database\\$^*$ not possible to differentiate the target of sedation \\$^{**}$ not possible to differentiate the target of vasopressor therapy\\$^{***}$ about osmotic therapy, no information about the dose was available}
+\end{table}
+
+\subsection{Outcome definition}
+The main purpose of this study was to explore the relationship between plasma sodium and intracranial pressure on the outcome of a patient. 
+
+For the machine learning development, a binary outcome has been defined: \textit{alive at 14 days} or \textit{not alive at 14 days}.
+
+Then, in the subgroup analysis, we tried refining the outcome in three subclasses (alive with GCS>8, alive with GCS<8 and death) to grossly explore the neurologic status at 14 days. Both Glasgow Outcome Coma Scale and survival status at discharge were not available in the dataset.
+
 %\subsection{Dataset internal validation}
 %To prove the recognized causal relationship between sodium and ICP, we tested it using the Granger Causality method
 
@@ -80,14 +136,16 @@ This outcome is binary, expressed as \textit{alive at 14 days} or \textit{not al
 
 For each specific binary classification task, to gain as much as possible predictive capabilities, we tested different pipelines using as evaluation metrics the accuracy and the AUC-ROC.
 Each pipeline is composed by a scaler\footnote{preprocessing tool in machine learning used to standardize or normalize feature values to ensure that each feature contributes equally to the model by bringing all values into a comparable range}, a feature selection method\footnote {technique used to identify and select the most relevant features (variables) from a dataset with the the highest predictive power to improve performance by reducing noise and avoiding overfitting.} and a machine learning model.
-
-The base model (\textit{Model 1}) has been developed and trained starting from patient demographics and clinical features available comprehensive of summary statics of sodium trends. For further details related to the features used to train this model refer to \textcolor{red}{CREATE AND REFERENCE THE TABLE}. 
+\begin{itemize}
+	\item The base model (\textit{Model 1}) has been developed and trained starting from patient demographics and clinical features available comprehensive of summary statics of sodium trends. 
+\end{itemize}
 
 Above this base model further features where added, in order:
 
-\textit {Model 2} accounts for the cumulative effect of ICP Dose and Na Dose. As middle step,  both ICP Dose and Na Dose were evaluated individually and then added together.
-
-The third model (\textit{Model 3}) explores the effects of the DeltaICP/DeltaNa informations over the base model. The DeltaICP/DeltaNa features where extracted as outlined in paragraph 3.2.3. 
+\begin{itemize}
+	\item \textit {Model 2} accounts for the cumulative effect of ICP Dose and Na Dose. As middle step,  both ICP Dose and Na Dose were evaluated individually and then added together.
+	\item The third model (\textit{Model 3}) explores the effects of the DeltaICP/DeltaNa informations over the base model. The DeltaICP/DeltaNa features where extracted as outlined in paragraph 3.2.3. 
+\end{itemize}
 
 \section {Results}
 \subsection{Patient Demographics and Clinical Features}
@@ -156,6 +214,9 @@ In this section we present the descriptive characteristics of our population, di
 	\caption{Continuous Feature Statistics. \footnotesize{APACHE: Acute Physiology and Chronic Health Evaluation, BMI: Body Mass Index, GCS: Glasgow Coma Scale, Na max: maximum serum sodium over 14 days, Na min: minimum serum sodium over 14 days, Na SD: standard deviation of plasma sodium over 14 days}}
 	\label{tab:continuous_features}
 \end{table}
+
+\textcolor{red}{SPOSTARE OUTCOME E TIL PRIMA DEI MODELLI? CONCETTUALMENTE PIU CORRETTO?}
+
 
 %\subsection{Relationship between serum sodium fluctuations and intracranial pressure}
 %\textcolor{red}{VALUTARE INSIEME SE E COME HA SENSO INSERIRE QUESTO PARAGRAFO, IN RIFERIMENTO A QUEL 60\% CIRCA}
@@ -262,6 +323,8 @@ Although we adjusted for TIL, serum sodium fluctuations may still be a reflectio
 Additional limitations in the subanalysis of patients within TIL therapy categories, beyond the already mentioned hypertonic saline, include missing data on decompressive craniectomy\cite{kimRecentUpdatesControversies2023a} and other interventions that are difficult to associate with specific treatment goals. For instance, it’s unclear whether vasopressors were used to manage elevated ICP or for other hemodynamic purposes, further complicating the analysis.
 
 Lastly, patients who died within the first three days were excluded, which may limit the generalizability of our results.
+
+\textcolor{red}{frasi da inserire: model 2 tiene conto di Dose Na e Dose ICP, in parte l'effetto è ridondante, essendo che parte della Dose Na causa Dose ICP ma è anche vero che la Dose NA data dalla ipernatriemia dovrebbe essere protettiva. Altro punto: la dose ICP dei pazienti con WOLST ha effetto tautologico (vedi arturo)}
 
 
 \section{Conclusion}
