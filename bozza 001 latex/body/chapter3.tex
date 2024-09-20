@@ -240,7 +240,7 @@ Our \textit{Model 2} achieved an AUC of 0,85 with a net 18\% improvement over ba
 \end{figure}
 
 \subsection{Relationship between sodium fluctuations and ICP fluctuations (DeltaICP/DeltaNa) on outcome}
-Our last model, \textit{Model 3} was targeting the relative changes between ICP curves and sodiumc curves over time. It reached an AUC of 0,83 with a 15\% gain  over base model. 
+Our last model, \textit{Model 3} was targeting the relative changes between ICP curves and sodium curves over time. It reached an AUC of 0,83 with a 15\% gain  over base model. 
 
 The model 3 is the result of a grid-search testing different tau and delta times, as shown in Figure \ref{fig:model3tau}.
 
@@ -300,26 +300,26 @@ The model 3 is the result of a grid-search testing different tau and delta times
 
 
 \section{Discussion}
-%key findings temp title
-We found that  serum sodium fluctuations and relative ICP fluctuations, are a significant predictor of mortality, in line with findings from Harrois et. al.\cite{harroisVariabilitySerumSodium2021a}
 
-In our study, even after adjusting for baseline severity, fluctuations in serum sodium and ICP, even within normal ranges, were still linked to 14-day mortality.
+\subsection{Machine learning models, what we learned}
+As a base model, \textit{Model 1} aims to predict patient outcomes using limited information, primarily focusing on data from the first 24 hours after admission and pre-existing comorbidities. The sodium-related variables are represented by basic statistical features, such as standard deviation. As somewhat expected, this model yielded an AUC of 0.72, indicating a satisfactory level of predictive performance to be used as reference for subsequent models.
 
+In \textit{Model 2}, we investigated the impact of both ICP Dose and Na Dose on patient outcomes. The relationship between ICP Dose and poor prognosis is well-established in the literature\cite{shethIntracranialPressureDose2013}\cite{schonenberg-tuPressureTimeDose2023}\cite{cuccioliniIntracranialPressureClinicians2023a}, and our model supports these findings. However, a noteworthy result is the contribution of Na Dose. While Model 2 incorporates both Na Dose and ICP Dose, some redundancy could be involved as Na Dose in cases of hyponatremia partially contributes to the ICP Dose. Conversely, Na Dose driven by hypernatremia should exhibit a protective effect. One limitation of this model, which may affect bias its performance, is the potential influence of higher ICP doses in patients who underwent WOLST (Withdrawal of Life-Sustaining Treatment), where no further therapeutic interventions to control ICP were applied.
+These results appear to validate the integrity of the dataset, providing a solid foundation for progressing to the next model.
+
+With \textit{Model 3} we delved into sodium fluctuations and related ICP fluctuations. 
+Severe dysnatremia has long been associated with higher mortality rates while sodium imbalances often arise in TBI patients. Furthermore inappropriate administration or restriction of free water, other comorbidities, treatments, surgery\cite{marshallAssociationSodiumFluctuations2017}\cite{sakrFluctuationsSerumSodium2013}, trauma and acute illnesses\cite{senSodiumVariabilityAssociated2017a} frequently trigger or exacerbate sodium fluctuations. However, emerging evidence\cite{darmonPrognosticConsequencesBorderline2013} indicate that even mild deviations from normal sodium levels or simple fluctuations in sodium values may carry significant clinical implications, especially in the brain injured patient. While this is well documented in subarachnoid hemorrhage \cite{jinAssociationSerumSodium2022}\cite{labibSodiumItsImpact2024}\cite{balesEffectHyponatremiaSodium2016}\cite{topjianGreaterFluctuationsSerum2014}\cite{eaglesSignificanceFluctuationsSerum2019}\cite{haradaImpactHormonalDynamics2022}, the effect on TBI has only recently been explored\cite{harroisVariabilitySerumSodium2021a}. 
+
+In our analysis, even after adjusting for baseline severity, we found that fluctuations in serum sodium and related changes in intracranial pressure (ICP) - also within normal ranges - are associated with 14-day mortality. This reinforces previous findings, such as those reported by Harrois et al.\cite{harroisVariabilitySerumSodium2021a}, confirming that sodium and ICP fluctuations are predictors of mortality in traumatic brain injury (TBI) patients.
+
+Recognizing sodium fluctuations as risk factors associated with mortality could provide new tools in sodium monitoring and management, further evidence to support a type of fluid over the other (hypotonic vs. isotonic) or to define acceptable and individualised sodium fluctuation ranges instead of fixed thresholds. Moreover, identifying sodium fluctuations as an independent risk factor for mortality emphasises the importance of further exploring physiological causes and pathophysiological impact of those fluctuations. 
+
+In our analysis larger fluctuations in DeltaICP/DeltaNa were associated with higher mortality, this could be driven by fluctuations in sodium alone. Rapid changes in sodium levels over a short time may pose a greater risk in patients with disrupted adaptive mechanisms. In the healthy brain, in response to hypertonic conditions in the extracellular space, cells attempt to restore osmotic balance by moving electrolytes and then absorbing organic osmoles, a process that requires time. Sudden shifts in extracellular sodium can lead to intracellular fluid and electrolyte imbalances, resulting in cellular edema or cellular shrinking, particularly in an already injured brain with compromised or slower adaptive mechanisms. An additional challenge lies in understanding how our interventions might affect the unsalvageable brain tissue, raising concerns that some therapies could unintentionally harm the salvageable regions we aim to protect in the first place.
+
+\subsection{Therapy Intensity Levels and Patient Outcomes}
 The DeltaICP/DeltaNa ratio suggests that larger fluctuations in serum sodium are associated with the need for higher therapy intensity levels, raising the possibility that acute sodium variations may partially explain the relationship between DeltaICP/DeltaNa and patient outcomes.\\
 
-%discussione vera e propria
-Severe dysnatremia has long been associated with higher mortality rates. Sodium disorders are often caused by excessive administration or restriction of free water, but they are also linked to various comorbidities. Additionally, treatments such as surgery\cite{marshallAssociationSodiumFluctuations2017}\cite{sakrFluctuationsSerumSodium2013}, trauma or other acute illnesses\cite{senSodiumVariabilityAssociated2017a} can trigger or exacerbate these imbalances.
-
-However, emerging evidence\cite{darmonPrognosticConsequencesBorderline2013} indicates that even mild deviations from normal sodium levels or simple fluctuations in sodium values may also carry significant clinical implications, especially in the brain injured patient. While this is well documented in subarachnoid hemorrhage \cite{jinAssociationSerumSodium2022}\cite{labibSodiumItsImpact2024}\cite{balesEffectHyponatremiaSodium2016}\cite{topjianGreaterFluctuationsSerum2014}\cite{eaglesSignificanceFluctuationsSerum2019}\cite{haradaImpactHormonalDynamics2022}, the effect on TBI has only recently been explored\cite{harroisVariabilitySerumSodium2021a}.
-
-%non sono sicuro di questa frase
-Our findings are significant for several reasons. First, understanding the risk factors associated with mortality helps clinicians make informed decisions about how often to monitor sodium levels, the type of fluids administered (hypotonic vs. isotonic), and how much sodium levels are allowed to fluctuate. Second, identifying sodium fluctuations as an independent risk factor for hospital mortality highlights the need to further explore their physiological causes and impacts, which could help clinicians identify at-risk patients earlier and potentially reduce mortality rates.
-
-In our DeltaICP/DeltaNa analysis, we found that larger fluctuations in DeltaICP/DeltaNa were associated with higher mortality, this could be driven by DeltaNa alone. Rapid changes in sodium levels over a short time may pose a greater risk to patients due to the fast cerebral fluid shifts that occur. In response to hypertonic conditions in the extracellular space, brain cells attempt to restore osmotic balance by absorbing organic osmoles, a process that requires time. Sudden shifts in extracellular sodium can lead to intracellular fluid and electrolyte imbalances, resulting in cellular edema, particularly in an already injured brain with compromised or slower adaptive mechanisms. Additionally, it remains challenging to determine how our interventions might affect the unsalvageable brain—could our therapies inadvertently harm the very salvageable brain tissue we aim to protect in the first place?
-
-%TIL
 It’s plausible that patients who died or had poor neurological outcomes at 14 days were exposed to a broader range of sodium concentrations due to the need for therapies like hypertonic saline. Although the delta/delta ratio is a relative measurement, the overall variation appears low. This counterintuitive result could be attributed to minimal fluctuation occurring at consistently high levels of Na (as part of the therapeutic strategy) and ICP (due to exhausted cerebral compliance).
-%inserire qui grafico sovrapposto di curva compliance e TIL.
 
 %parlando di TIL, specificare come le distribuzioni dei nostri pazienti siano sovrapponibili con quelle di altri studi: es SYANPSE-ICU
 
@@ -336,8 +336,6 @@ Although we adjusted for TIL, serum sodium fluctuations may still be a reflectio
 Additional limitations in the subanalysis of patients within TIL therapy categories, beyond the already mentioned hypertonic saline, include missing data on decompressive craniectomy\cite{kimRecentUpdatesControversies2023a} and other interventions that are difficult to associate with specific treatment goals. For instance, it’s unclear whether vasopressors were used to manage elevated ICP or for other hemodynamic purposes, further complicating the analysis.
 
 Lastly, patients who died within the first three days were excluded, which may limit the generalizability of our results.
-
-\textcolor{red}{frasi da inserire: model 2 tiene conto di Dose Na e Dose ICP, in parte l'effetto è ridondante, essendo che parte della Dose Na causa Dose ICP ma è anche vero che la Dose NA data dalla ipernatriemia dovrebbe essere protettiva. Altro punto: la dose ICP dei pazienti con WOLST ha effetto tautologico (vedi arturo)}
 
 
 \section{Conclusion}
