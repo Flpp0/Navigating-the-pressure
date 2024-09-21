@@ -215,9 +215,6 @@ In this section we present the descriptive characteristics of our population, di
 	\label{tab:continuous_features}
 \end{table}
 
-\textcolor{red}{SPOSTARE OUTCOME E TIL PRIMA DEI MODELLI? CONCETTUALMENTE PIU CORRETTO?}
-
-
 %\subsection{Relationship between serum sodium fluctuations and intracranial pressure}
 %\textcolor{red}{VALUTARE INSIEME SE E COME HA SENSO INSERIRE QUESTO PARAGRAFO, IN RIFERIMENTO A QUEL 60\% CIRCA}
 \subsection{Relationship of patient descriptives on outcome}
@@ -259,6 +256,7 @@ The model 3 is the result of a grid-search testing different tau and delta times
 
 
 \subsection{Subgroup analysis: outcome}
+The following present the relationship between intracranial pressure (ICP) and patient outcomes. Figure \ref{fig:ICPdose_outcome} illustrates the distribution of ICP Dose across different neurological outcomes, categorized by Glasgow Coma Scale (GCS) scores and survival status, showing a trend of increasing ICP burden with worsening outcomes. Figure \ref{fig:ICPfluctuations_outcome} displays the variability in ICP fluctuations across the same outcome groups, highlighting a decrease in fluctuations as the severity of outcomes increases. Lastly, Figure \ref{fig:ICPslope_outcome} presents the linear trend of ICP over time (represented by the ICP signal slope), with a progressive increase in slope correlating with poorer patient outcomes.
 
 \begin{figure}[h!]
     \centering
@@ -282,7 +280,8 @@ The model 3 is the result of a grid-search testing different tau and delta times
 \end{figure}
 
 \subsection{Subgroup analysis: TIL}
-\textcolor{red}{SAREBBE IL DISCORSO SUI TIL CON LE VARIE TABELLE}
+\textcolor{red}{POTREBBE ESSERE MERITEVOLE METTERE UNA TABELLA O GRAFICO CHE MOSTRI IN PERCENTUALE COME SONO DISTRIBUITI I PAZIENTI, PER VEDERE CHE I DATI SONO SOVRAPPONIBILI CON SYNAPSE-ICU}
+The last subgroup analysis focused on ICP and sodium fluctuations across different Therapy Intensity Levels (TILs). 
 
 \begin{figure}[h!]
     \centering
@@ -316,14 +315,26 @@ Recognizing sodium fluctuations as risk factors associated with mortality could 
 
 In our analysis larger fluctuations in DeltaICP/DeltaNa were associated with higher mortality, this could be driven by fluctuations in sodium alone. Rapid changes in sodium levels over a short time may pose a greater risk in patients with disrupted adaptive mechanisms. In the healthy brain, in response to hypertonic conditions in the extracellular space, cells attempt to restore osmotic balance by moving electrolytes and then absorbing organic osmoles, a process that requires time. Sudden shifts in extracellular sodium can lead to intracellular fluid and electrolyte imbalances, resulting in cellular edema or cellular shrinking, particularly in an already injured brain with compromised or slower adaptive mechanisms. An additional challenge lies in understanding how our interventions might affect the unsalvageable brain tissue, raising concerns that some therapies could unintentionally harm the salvageable regions we aim to protect in the first place.
 
-\subsection{Therapy Intensity Levels and Patient Outcomes}
-The DeltaICP/DeltaNa ratio suggests that larger fluctuations in serum sodium are associated with the need for higher therapy intensity levels, raising the possibility that acute sodium variations may partially explain the relationship between DeltaICP/DeltaNa and patient outcomes.\\
+\subsection{Patient Outcomes and Therapy Intensity Levels}
+In the subgroup analyses, stratifying patients based on outcome, is still clear as an increasing ICP Dose is found in patients with a poorer prognosis. This is evident in Fig. \ref{fig:ICPdose_outcome}, there is a clear trend of increasing ICP dose as neurological outcomes worsen. Patients with a GCS greater than 8 exhibit the lowest ICP doses, while those with GCS scores below 8 have moderate increases. The highest ICP doses are observed in patients who did not survive, indicating a strong association between elevated ICP doses and mortality. The normalized ICP dose above the threshold increases progressively across the three groups, reflecting the growing difficulty in managing ICP as patient outcomes deteriorate.
 
-It’s plausible that patients who died or had poor neurological outcomes at 14 days were exposed to a broader range of sodium concentrations due to the need for therapies like hypertonic saline. Although the delta/delta ratio is a relative measurement, the overall variation appears low. This counterintuitive result could be attributed to minimal fluctuation occurring at consistently high levels of Na (as part of the therapeutic strategy) and ICP (due to exhausted cerebral compliance).
+Looking together at Fig. \ref{fig:ICPfluctuations_outcome} and Fig. \ref{fig:ICPslope_outcome} key patterns in intracranial pressure (ICP) fluctuations and linear trends relative to neurological outcomes become more evident. In the first one, it is evident that as neurological outcomes worsen, ICP fluctuations, measured by mean crossing rate, show a noticeable decline. This decrease in variability could reflect a progressive exhaustion of cerebral compliance, as the brain becomes less able to accommodate pressure changes, leading to more consistent and sustained elevations in ICP. This loss of fluctuation may indicate that the brain’s adaptive mechanisms are failing. Fig. \ref{fig:ICPslope_outcome} further supports this by showing a clear linear trend: ICP signal slope steadily increases as neurological outcomes worsen. Patients with GCS > 8 exhibit a relatively stable ICP slope, while those with worse outcomes (GCS < 8 and deceased) show a more pronounced upward trend. This suggests a progressive rising trend in ICP over time, further stressing the brain and potentially contributing to worsening outcomes. 
+
+In conclusion, the findings across figures \ref{fig:ICPdose_outcome}, \ref{fig:ICPfluctuations_outcome} and \ref{fig:ICPslope_outcome} present a consistent narrative of progressively increasing ICP burden and worsening neurological outcomes. Those graphs reinforce the importance of early and aggressive ICP dose management with the aim to mitigate secondary brain injury.\\
+
+We then tried to have a quantifiable measure of the intensity of treatments and interventions administered to a brain injured patients with subgroup analysis divided in TIL categories.  In clinical practice, TIL is used to evaluate and categorize the level of therapeutic interventions needed, particularly for managing conditions like elevated ICP. Although our study did not have an objective measure of compliance, a higher TIL suggests more difficulty in managing ICP. Therefore, we can infer that a higher TIL indicates poorer compliance, making TIL a rough proxy for assessing compliance in treatment.
+In Fig. \ref{fig:DDTIL}, the mean ICP values are presented for different TILs, revealing an intriguing pattern. The intermediate TIL group demonstrates a notably higher mean ICP compared to the most severe category (TIL 4 or extreme TIL). This counterintuitive observation could suggest that at higher TIL levels aggressive therapeutic interventions (e.g., hyperosmolar therapy or decompressive craniectomy) are more frequently employed to manage ICP,  limiting further increases in pressure. In contrast, at intermediate TILs, ICP may be more difficult to control, leading to higher values. 
+\textcolor{red}{INSERIRE GRAFICO ICP DOSE E TIL PER VEDERE SE MIGLIORA: CIOE LA DOSE ICP IN TIL 2 è PIU BASSA CHE IN TIL 4 -> RAFFORZEREBBE IL CONCETTO DELLA ICP DOSE!}
+Fig. \ref{fig:DDTIL} illustrates how the DeltaICP/DeltaNa ratio changes across TIL levels. In patients with lower TILs the brain seems able to compensate for increases in ICP, if any occurs at all. As the TIL increases, this could represent a gradual depletion of compensatory reserves and a significant rise in ICP, accompanied by an increased risk of cerebral ischemia and herniation. By the time patients reach the highest TIL level (TIL 4), cerebral compliance is nearly depleted, suggesting that most compensatory mechanisms have been exhausted. At this stage, ICP has likely reached its maximum plateau, which accounts for the reduced variability in fluctuations observed at the extreme TIL level. Since DeltaICP/DeltaNa is a ratio of relative changes, as these fluctuations diminish and ICP can no longer vary significantly due to this plateau, the DeltaICP/DeltaNa ratio becomes less meaningful in reflecting further dynamic changes. It’s also likely that patients who either died or had poor neurological outcomes at 14 days experienced a wider range of sodium concentrations due to treatments such as hypertonic saline, this could further explain those minimal fluctuations occurring at consistently elevated levels of sodium (as part of the therapeutic approach) and ICP (resulting from exhausted cerebral compliance).
+At the opposite, the DeltaICP/DeltaNa ratio of the intermediate TILs suggests that larger fluctuations in serum sodium are associated with the need for higher therapy intensity levels, raising the possibility that acute sodium variations may partially explain the relationship between DeltaICP/DeltaNa and patient outcomes.\\
+
+\textcolor{red}{FARE GRAFICO DOVE PER TIL MOSTRIAMO MORTI E VIVI? COSI SPUNTO PER QUANTO LA NOSTRA TP AGGRESSIVA -> TIL 4 I VIVI SONO MOLTISSIMI MA LO STATO NEUROLOGICO È PESSIMO, SONO I NOSTRI TRATTAMENTI AGGRESSIVI TROPPO TARDIVI? ES CRANIECTOMIA DECOMPRESSSIVA? SALVIAMO L'ORGANISMO MA NON IL CERVELLO}
+\\
+
 
 %parlando di TIL, specificare come le distribuzioni dei nostri pazienti siano sovrapponibili con quelle di altri studi: es SYANPSE-ICU
 
-\subsection{Limitations and current prospectives}
+\subsection{Limitations}
 This is a retrospective study, and as such, it carries the inherent limitations associated with this type of research.
 
 We did not assess neurological outcomes nor the Glasgow Outcome Coma Scale was available in our database. This limitation should be addressed in future studies investigating sodium fluctuations in TBI patients.
@@ -339,8 +350,12 @@ Lastly, patients who died within the first three days were excluded, which may l
 
 
 \section{Conclusion}
-While doses of potassium, glucose, and water are routinely adjusted, sodium is typically administered at standard concentrations as long as serum levels remain within an acceptable or desired range. This is common practice in many ICU patients and is well tolerated in most cases. However, for some individuals, the sodium content may not align with their intravascular volume or neuroendocrine status, leading to impaired sodium homeostasis. Until it is definitively proven that dysnatremia is merely a non-causal marker of an underlying harmful systemic process, it is prudent to assume that even slight sodium fluctuations and the resulting osmotic shifts could be detrimental. Therefore, the focus should perhaps shift to sodium fluctuations, or even osmolality. Minimizing sodium fluctuations to maintain a stable sodium trajectory and osmolality might be of more importance than sodium levels themselves.
+While doses of potassium, glucose, and water are routinely adjusted, sodium is typically administered at standard concentrations as long as serum levels remain within an acceptable or desired range. This is common practice in many ICU patients and is well tolerated in most cases. However, for the peculiar brain injured patient, the sodium content may not align with the intravascular volume or neuroendocrine status, leading to impaired sodium homeostasis. 
+Our findings highlight the importance of monitoring both sodium and ICP fluctuations in critical care settings, particularly in neurocritical care patients. Our work suggests that even within clinically acceptable ranges, significant sodium variability is linked to poorer outcomes.
 
+The DeltaICP/DeltaNa ratio, which reflects the relationship between sodium and ICP fluctuations, shows that larger sodium fluctuations are associated with more aggressive therapeutic interventions and worse neurological outcomes. This further supports the idea that sodium fluctuations, rather than absolute levels, may play a critical role in patient prognosis. As cerebral compliance becomes increasingly impaired, as seen in higher Therapy Intensity Levels (TILs), sodium variability could exacerbate the risk of secondary brain injury due to osmotic shifts and the body’s diminishing ability to regulate ICP.
+
+Given these findings, it may be prudent to consider shifting the focus toward minimizing sodium fluctuations and maintaining osmolality stability rather than solely aiming to keep serum sodium levels within a “normal” range. By reducing the dynamic shifts in sodium and ensuring a stable trajectory, we could potentially mitigate the risk of further cerebral damage, particularly in patients with compromised brain compliance. This underscores the need for a more individualized approach to sodium management in the ICU, where therapy intensity and the patient’s fluctuating physiological state should inform fluid and electrolyte administration.
 
 
 
