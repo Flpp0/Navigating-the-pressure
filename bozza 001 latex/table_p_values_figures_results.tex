@@ -1,0 +1,71 @@
+\documentclass{article}
+\usepackage{amsmath}
+
+\begin{document}
+	
+	% Table 1: ANOVA Results for GCS Features
+	\begin{table}[h!]
+		\centering
+		\begin{tabular}{|l|c|c|}
+			\hline
+			\textbf{GCS Feature} & \textbf{F-value} & \textbf{p-value} \\ \hline
+			dose\_PIC above th normalized & 20.91 & 2.27e-09 \\ \hline
+			deltadelta PIC mean crossing rate & 5.34 & 0.0051 \\ \hline
+			deltadelta PIC signal slope & 3.23 & 0.0406 \\ \hline
+		\end{tabular}
+		\caption{ANOVA results showing overall statistical differences for GCS features}
+		\label{tab:gcs_anova}
+	\end{table}
+	
+% Table 2: Tukey HSD Results for GCS Features
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{|l|c|c|c|c|}
+		\hline
+		\textbf{GCS Feature} & \textbf{Group 1} & \textbf{Group 2} & \textbf{Mean Difference} & \textbf{p-value} \\ \hline
+		dose\_PIC above th normalized & TIL10 & TIL32 & 88247.22 & 0.0000 \\ \hline
+		dose\_PIC above th normalized & TIL10 & TIL4 & 103873.23 & 0.0000 \\ \hline
+		dose\_PIC above th normalized & TIL32 & TIL4 & -26362.88 & 0.9827 \\ \hline
+		deltadelta PIC signal slope & TIL10 & TIL32 & 132.24 & 0.0308 \\ \hline
+		deltadelta PIC signal slope & TIL10 & TIL4 & 101.05 & 0.3802 \\ \hline
+		deltadelta PIC signal slope & TIL32 & TIL4 & -31.19 & 0.8898 \\ \hline
+		deltadelta PIC mean crossing rate & TIL10 & TIL32 & 452.34 & 0.0012 \\ \hline
+		deltadelta PIC mean crossing rate & TIL10 & TIL4 & 398.27 & 0.0241 \\ \hline
+		deltadelta PIC mean crossing rate & TIL32 & TIL4 & -54.07 & 0.7123 \\ \hline
+	\end{tabular}
+	\caption{Tukey HSD pairwise comparisons for GCS features}
+	\label{tab:gcs_tukey}
+\end{table}
+
+	
+	% Table 3: ANOVA Results for TIL Features
+	\begin{table}[h!]
+		\centering
+		\begin{tabular}{|l|c|c|}
+			\hline
+			\textbf{TIL Feature} & \textbf{F-value} & \textbf{p-value} \\ \hline
+			PIC mean distribution & 5.95 & 0.0028 \\ \hline
+			PIC deltadelta max & 3.23 & 0.0406 \\ \hline
+		\end{tabular}
+		\caption{ANOVA results showing overall statistical differences for TIL features}
+		\label{tab:til_anova}
+	\end{table}
+	
+	% Table 4: Tukey HSD Results for TIL Features
+	\begin{table}[h!]
+		\centering
+		\begin{tabular}{|l|c|c|c|c|}
+			\hline
+			\textbf{TIL Feature} & \textbf{Group 1} & \textbf{Group 2} & \textbf{Mean Difference} & \textbf{p-value} \\ \hline
+			PIC mean distribution & TIL10 & TIL32 & 132.24 & 0.0308 \\ \hline
+			PIC mean distribution & TIL10 & TIL4 & 101.05 & 0.3802 \\ \hline
+			PIC mean distribution & TIL32 & TIL4 & -31.19 & 0.8898 \\ \hline
+			PIC deltadelta max & TIL10 & TIL32 & 367088.61 & 0.0039 \\ \hline
+			PIC deltadelta max & TIL10 & TIL4 & 340725.73 & 0.1022 \\ \hline
+			PIC deltadelta max & TIL32 & TIL4 & -26362.88 & 0.9827 \\ \hline
+		\end{tabular}
+		\caption{Tukey HSD pairwise comparisons for TIL features}
+		\label{tab:til_tukey}
+	\end{table}
+	
+\end{document}
