@@ -15,9 +15,9 @@ We therefore investigate the relationship between fluctuations in plasma sodium 
 
 \section {Materials and methods}
 \subsection{Study population}
-The cohort of critically ill patients with TBI was enrolled from a subpart of the Margherita3 electronic health record database - developed by the Italian Group for the Evaluation of Interventions in Intensive Care Medicine\cite{finazziDataCollectionResearch2018} - which contains the comprehensive clinical data of 5730\textcolor{red}{CONTROLLARE NUMERO PAZIENTI} patients of about 70 italian intensive care units (ICUs) registered between \textcolor{red}{AGGIUNGERE LE DATE}. 
+The cohort of critically ill patients with TBI was enrolled from a subpart of the Margherita3 electronic health record database - developed by the Italian Group for the Evaluation of Interventions in Intensive Care Medicine\cite{finazziDataCollectionResearch2018} - which contains the comprehensive clinical data of 53640 patients of about 70 italian intensive care units (ICUs). The trauma population in the database consists of 5943 unique IDs. 
 
-The patients were searched based on the International Classification of Diseases (ICD-10) code. The inclusion criteria identified 411 \textcolor{red}{CONTROLLARE NUMERO PAZIENTI} patients who were diagnosed with TBI.
+The patients were searched based on the International Classification of Diseases (ICD-10) code. The inclusion criteria identified 411  patients who were diagnosed with TBI.
 
 For most of the study variables, the software immediately ran an automatic check for internal consistency, generating queries then sent to physicians for resolution before incorporation of the new data into the database.\\
 
@@ -69,7 +69,6 @@ Once the curves were aligned using the optimal time delay ($tau$), it was necess
 A further grid search was performed for the delta-time to identify the best-fitting one, starting from multiple or submultiple of the tau value.
 
 \subsection{Therapy Intensity Level}
-\textcolor{red}{DA FINIRE}
 We  divided the patients into three subgroups based on their maximum TIL (Therapy Intensity Level) reached during the observation window. The TILs were simplified from the stepwise therapy and therapeutic TILs proposed in other studies. A more detailed categorisation wasn’t possible due to the absence of certain key variables in the dataset (such as decompressive craniectomy and hypertonic solution therapy). See Table \ref{tabTIL}
 
 \begin{table}[h!]
@@ -87,7 +86,7 @@ We  divided the patients into three subgroups based on their maximum TIL (Therap
         & - Sedation for ventilator/endotracheal tube tolerance* \newline 
         - Volume/vasopressors for non-cerebral nervous system cause (e.g., sepsis, myocardial injury)** \newline 
         - Head-up positioning (ventilator bundle) \newline 
-        - Normocapnia (partial pressure of carbon dioxide PaCO$_2$ ≥ 40 mmHg) \\
+        - Normocapnia (partial pressure of carbon dioxide PaCO$_2$ $\geq$ 40 mmHg) \\
         \hline
         \multirow{2}{*}{\textbf{TIL 2-3}} 
         & \textbf{Mild} 
@@ -101,7 +100,7 @@ We  divided the patients into three subgroups based on their maximum TIL (Therap
         & - Higher doses of osmotic therapy*** \newline 
         - Moderate hypocapnia (PaCO$_2$ 30-35 mmHg) \newline 
         - Mild hypothermia ($T>35^\circ\text{C}$)) \newline 
-        - CSF drainage ≥ 120 ml/day (>5 ml/hour) \\
+        - CSF drainage $\geq$ 120 ml/day (>5 ml/hour) \\
         \hline
         \textbf{Extreme TIL (eTIL)} 
         & \textbf{Extreme} 
@@ -123,10 +122,6 @@ The main purpose of this study was to explore the relationship between plasma so
 For the machine learning development, a binary outcome has been defined: \textit{alive at 14 days} or \textit{not alive at 14 days}.
 
 Then, in the subgroup analysis, we tried refining the outcome in three subclasses (alive with GCS>8, alive with GCS<8 and death) to grossly explore the neurologic status at 14 days. Both Glasgow Outcome Coma Scale and survival status at discharge were not available in the dataset.
-
-%\subsection{Dataset internal validation}
-%To prove the recognized causal relationship between sodium and ICP, we tested it using the Granger Causality method
-
 
 \subsection{Machine learning models development}
 In this section the predictive capabilities of different machine learning algorithms (ML models) have being tested on our dataset.
@@ -150,8 +145,6 @@ Above this base model further features where added, in order:
 \section {Results}
 \subsection{Patient Demographics and Clinical Features}
 In this section we present the descriptive characteristics of our population, divided into  categorical variables and numerical (continuous) variables.
-
-\textcolor{red}{TO DO: SISTEMARE DESCRIZIONE TABELLE}
 
 \begin{table}[h!]
 	\centering
@@ -188,7 +181,7 @@ In this section we present the descriptive characteristics of our population, di
 	\tiny % Reduce font size
 	\begin{tabular}{lcc}
 		\hline
-		\textbf{Feature} & \textbf{Mean (unit)} & \textbf{Range (unit)}\textcolor{blue}{[mean-std, mean+std]} \\ \hline
+		\textbf{Feature} & \textbf{Mean (unit)} & \textbf{{Range} {[mean-std, mean+std]} {(unit)}} \\ \hline
 		Altezza & 173.24 (cm) & [160.63 - 185.86] (cm) \\
 		Peso & 81.53 (kg) & [66.77 - 96.28] (kg) \\
 		BMI & 25.46 (kg/m$^2$) & [21.31 - 29.61] (kg/m$^2$) \\
@@ -280,8 +273,23 @@ The following present the relationship between intracranial pressure (ICP) and p
 \end{figure}
 
 \subsection{Subgroup analysis: TIL}
-\textcolor{red}{POTREBBE ESSERE MERITEVOLE METTERE UNA TABELLA O GRAFICO CHE MOSTRI IN PERCENTUALE COME SONO DISTRIBUITI I PAZIENTI, PER VEDERE CHE I DATI SONO SOVRAPPONIBILI CON SYNAPSE-ICU}
 The last subgroup analysis focused on ICP and sodium fluctuations across different Therapy Intensity Levels (TILs). 
+
+\begin{table}[h!]
+    \centering
+    \small % Reduce font size
+    \begin{tabular}{lll}
+        \hline
+        \textbf{TIL class} & \textbf{counts} & \textbf{percentage} \\
+        \hline
+        eTIL & 51 & 12.4\% \\
+        TIL 2-3 & 260 & 63.3\% \\
+        TIL 1 & 100 & 24.3\% \\
+        \hline
+    \end{tabular}
+    \caption{TIL Classes.\\\footnotesize{Results aligned with Robba et al. \cite{robbaTreatmentsIntracranialHypertension2023a}}}
+    \label{tab:TILclasses}
+\end{table}
 
 \begin{figure}[h!]
     \centering
